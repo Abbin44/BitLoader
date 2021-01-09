@@ -39,16 +39,46 @@ namespace Torrent
             return maxDownloadSpeed;
         }
 
+        public bool GetUnlimitedDownloadSpeed()
+        {
+            return unlimitedDownloadSpeed;
+        }
+        public bool GetUnlimitedUploadSpeed()
+        {
+            return unlimitedUploadSpeed;
+        }
+
+        int maxUploadSpeed;
+        int maxDownloadSpeed;
+        bool unlimitedDownloadSpeed;
+        bool unlimitedUploadSpeed;
+
         #region Events
         private void pAddTorrent_Load(object sender, EventArgs e)
         {
             pSettings settings = new pSettings();
             addFilePathTxt.Text = settings.defaultSettings.defaultTorrentPath;
             saveFilePathTxt.Text = settings.defaultSettings.defaultSavePath;
-            downloadSpeedSelector.Value = settings.defaultSettings.defaultMaxDownloadSpeed;
-            uploadSpeedSelector.Value = settings.defaultSettings.defaultMaxUploadSpeed;
-        }
+            unlimitedDownloadSpeed = settings.defaultSettings.unlimitedDownloadSpeed;
+            unlimitedUploadSpeed = settings.defaultSettings.unlimitedUploadSpeed;
 
+
+            if (settings.defaultSettings.unlimitedDownloadSpeed == true)
+            {
+                downloadSpeedSelector.Enabled = false;
+                unlimitedDownLbl.Visible = true;
+            }
+            else
+                downloadSpeedSelector.Value = settings.defaultSettings.defaultMaxDownloadSpeed;
+
+            if (settings.defaultSettings.unlimitedUploadSpeed == true)
+            {
+                uploadSpeedSelector.Enabled = false;
+                unlimitedUploadLbl.Visible = true;
+            }
+            else
+                uploadSpeedSelector.Value = settings.defaultSettings.defaultMaxUploadSpeed;
+        }
 
         private void addFileBtn_Click(object sender, EventArgs e)
         {
@@ -79,14 +109,13 @@ namespace Torrent
             saveFilePathTxt.Text = saveFilePath;
         }
 
-        int maxUploadSpeed;
-        int maxDownloadSpeed;
-        private void addTorBtn_Click(object sender, EventArgs e)
+        private void addTorrentBtn_Click(object sender, EventArgs e)
         {
             maxUploadSpeed = Convert.ToInt32(uploadSpeedSelector.Value * 1024);
             maxDownloadSpeed = Convert.ToInt32(downloadSpeedSelector.Value * 1024);
             this.Close();
         }
         #endregion
+
     }
 }

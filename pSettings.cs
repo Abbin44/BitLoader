@@ -13,7 +13,7 @@ namespace Torrent
 {
     public partial class pSettings : Form
     {
-        string filePath = @"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
+        string filePath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
         public DefaultSettings defaultSettings = new DefaultSettings();
         public pSettings()
         {
@@ -51,6 +51,12 @@ namespace Torrent
                     case "MaxUpSpeed":
                         defaultSettings.defaultMaxUploadSpeed = Convert.ToInt32(settings[i][1]);
                         break;
+                    case "UnlimitedDownSpeed":
+                        defaultSettings.unlimitedDownloadSpeed = Convert.ToBoolean(settings[i][1]);
+                        break;
+                    case "UnlimitedUpSpeed":
+                        defaultSettings.unlimitedUploadSpeed = Convert.ToBoolean(settings[i][1]);
+                        break;
                     default:
                         Console.WriteLine("Error loading settings, something is wrong...");
                         break;
@@ -65,21 +71,26 @@ namespace Torrent
             string settings;
             if (!File.Exists(filePath))
             {
-                settings =  @"TorrentPath>C:\Users" + Environment.UserName + @"\Downloads" + Environment.NewLine +
-                            @"SaveFolder>C:\Users" + Environment.UserName + @"\Downloads" + Environment.NewLine +
+                settings =  $@"TorrentPath>C:\Users" + Environment.UserName + $@"\Downloads" + Environment.NewLine +
+                            $@"SaveFolder>C:\Users" + Environment.UserName + $@"\Downloads" + Environment.NewLine +
                             @"MaxDownSpeed>" + downloadSpeedSelector.Value.ToString() + Environment.NewLine +
-                            @"MaxUpSpeed>" + uploadSpeedSelector.Value.ToString() + Environment.NewLine;
+                            @"MaxUpSpeed>" + uploadSpeedSelector.Value.ToString() + Environment.NewLine +
+                            @"UnlimitedDownSpeed>" + unlimitedDownSpeedChk.Checked.ToString() + Environment.NewLine +
+                            @"UnlimitedUpSpeed>" + unlimitedUpSpeedChk.Checked.ToString() + Environment.NewLine;
+                File.WriteAllText(filePath, settings);
+                ReadSettingsFile();
             }
             else
             {
                 settings = $@"TorrentPath>" + defaultSettings.defaultTorrentPath + Environment.NewLine +
                             @"SaveFolder>" + defaultSettings.defaultSavePath + Environment.NewLine +
                             @"MaxDownSpeed>" + defaultSettings.defaultMaxDownloadSpeed.ToString() + Environment.NewLine +
-                            @"MaxUpSpeed>" + defaultSettings.defaultMaxUploadSpeed.ToString() + Environment.NewLine;
+                            @"MaxUpSpeed>" + defaultSettings.defaultMaxUploadSpeed.ToString() + Environment.NewLine +
+                            @"UnlimitedDownSpeed>" + unlimitedDownSpeedChk.Checked.ToString() + Environment.NewLine +
+                            @"UnlimitedUpSpeed>" + unlimitedUpSpeedChk.Checked.ToString() + Environment.NewLine;
+                ReadSettingsFile();
+                File.WriteAllText(filePath, settings);
             }
-
-            ReadSettingsFile();
-            File.WriteAllText(filePath, settings);
         }
 
         private string OpenFolderDialog()
@@ -99,11 +110,13 @@ namespace Torrent
         #region Events
         private void pSettings_Load(object sender, EventArgs e)
         {
+            //Fill all boxes with the settings from the read file method
             defaultTorrentPathTxt.Text = defaultSettings.defaultTorrentPath;
             defaultSavePathTxt.Text = defaultSettings.defaultSavePath;
             downloadSpeedSelector.Value = defaultSettings.defaultMaxDownloadSpeed;
             uploadSpeedSelector.Value = defaultSettings.defaultMaxUploadSpeed;
-            //Fill all boxes with the settings from the read file method
+            unlimitedDownSpeedChk.Checked = defaultSettings.unlimitedDownloadSpeed;
+            unlimitedUpSpeedChk.Checked = defaultSettings.unlimitedUploadSpeed;
         }
         private void addTorFolderBtn_Click(object sender, EventArgs e)
         {
@@ -130,10 +143,7 @@ namespace Torrent
         private void unlimitedDownSpeedChk_CheckedChanged(object sender, EventArgs e)
         {
             if (unlimitedDownSpeedChk.Checked == true)
-            {
-                defaultSettings.defaultMaxDownloadSpeed = 1888; //1888 is representative of unlimited. However, everything above 1000 will be unlimited
                 downloadSpeedSelector.Enabled = false;
-            }
             else
                 downloadSpeedSelector.Enabled = true;
         }
@@ -141,16 +151,12 @@ namespace Torrent
         private void unlimitedUpSpeedChk_CheckedChanged(object sender, EventArgs e)
         {
             if (unlimitedUpSpeedChk.Checked == true)
-            {
-                defaultSettings.defaultMaxUploadSpeed = 1888;
                 uploadSpeedSelector.Enabled = false;
-            }
             else
                 uploadSpeedSelector.Enabled = true;
         }
         private void applyBtn_Click(object sender, EventArgs e)
         {
-            //Make sure the value 1888 is not stuck after the user has unticked the box but not edited the speed selector
             if (unlimitedDownSpeedChk.Checked == false)
                 defaultSettings.defaultMaxDownloadSpeed = Convert.ToInt32(downloadSpeedSelector.Value);
 

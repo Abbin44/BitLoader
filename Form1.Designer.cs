@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cMainForm));
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "",
             "",
             "",
@@ -37,18 +37,29 @@
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.addTorrentFileToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStrip = new System.Windows.Forms.ToolStripButton();
-            this.mainToolStrip = new System.Windows.Forms.ToolStrip();
+            this.mainToolStripTop = new System.Windows.Forms.ToolStrip();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.mainListView = new System.Windows.Forms.ListView();
             this.column0 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.column1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.column2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.column3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.mainToolStrip.SuspendLayout();
+            this.mainToolStripBottom = new System.Windows.Forms.TabControl();
+            this.tab1 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanelTop = new System.Windows.Forms.TableLayoutPanel();
+            this.downloadedLbl = new System.Windows.Forms.Label();
+            this.downloadedProgressBar = new System.Windows.Forms.ProgressBar();
+            this.downloadedPercentLbl = new System.Windows.Forms.Label();
+            this.tab2 = new System.Windows.Forms.TabPage();
+            this.tab3 = new System.Windows.Forms.TabPage();
+            this.tab4 = new System.Windows.Forms.TabPage();
+            this.mainToolStripTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.mainToolStripBottom.SuspendLayout();
+            this.tab1.SuspendLayout();
+            this.tableLayoutPanelTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripDropDownButton1
@@ -78,16 +89,15 @@
             this.settingsToolStrip.Text = "Settings";
             this.settingsToolStrip.Click += new System.EventHandler(this.settingsToolStrip_Click);
             // 
-            // mainToolStrip
+            // mainToolStripTop
             // 
-            this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainToolStripTop.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDropDownButton1,
             this.settingsToolStrip});
-            this.mainToolStrip.Location = new System.Drawing.Point(0, 0);
-            this.mainToolStrip.Name = "mainToolStrip";
-            this.mainToolStrip.Size = new System.Drawing.Size(1137, 25);
-            this.mainToolStrip.TabIndex = 1;
-            this.mainToolStrip.Text = "toolStrip1";
+            this.mainToolStripTop.Location = new System.Drawing.Point(0, 0);
+            this.mainToolStripTop.Name = "mainToolStripTop";
+            this.mainToolStripTop.Size = new System.Drawing.Size(1904, 25);
+            this.mainToolStripTop.TabIndex = 1;
             // 
             // splitContainer1
             // 
@@ -98,10 +108,13 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.progressBar);
             this.splitContainer1.Panel1.Controls.Add(this.mainListView);
-            this.splitContainer1.Size = new System.Drawing.Size(1137, 638);
-            this.splitContainer1.SplitterDistance = 322;
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.mainToolStripBottom);
+            this.splitContainer1.Size = new System.Drawing.Size(1904, 1016);
+            this.splitContainer1.SplitterDistance = 512;
             this.splitContainer1.TabIndex = 2;
             // 
             // mainListView
@@ -109,16 +122,15 @@
             this.mainListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.column0,
             this.column1,
-            this.column2,
-            this.column3});
+            this.column2});
             this.mainListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainListView.FullRowSelect = true;
             this.mainListView.HideSelection = false;
             this.mainListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem1});
             this.mainListView.Location = new System.Drawing.Point(0, 0);
             this.mainListView.Name = "mainListView";
-            this.mainListView.Size = new System.Drawing.Size(1137, 322);
+            this.mainListView.Size = new System.Drawing.Size(1904, 512);
             this.mainListView.TabIndex = 0;
             this.mainListView.UseCompatibleStateImageBehavior = false;
             this.mainListView.View = System.Windows.Forms.View.Details;
@@ -138,36 +150,131 @@
             this.column2.Text = "Downloaded";
             this.column2.Width = 111;
             // 
-            // progressBar
+            // mainToolStripBottom
             // 
-            this.progressBar.ForeColor = System.Drawing.Color.Blue;
-            this.progressBar.Location = new System.Drawing.Point(688, 180);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(100, 23);
-            this.progressBar.TabIndex = 1;
+            this.mainToolStripBottom.Controls.Add(this.tab1);
+            this.mainToolStripBottom.Controls.Add(this.tab2);
+            this.mainToolStripBottom.Controls.Add(this.tab3);
+            this.mainToolStripBottom.Controls.Add(this.tab4);
+            this.mainToolStripBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainToolStripBottom.Location = new System.Drawing.Point(0, 0);
+            this.mainToolStripBottom.Name = "mainToolStripBottom";
+            this.mainToolStripBottom.SelectedIndex = 0;
+            this.mainToolStripBottom.Size = new System.Drawing.Size(1904, 500);
+            this.mainToolStripBottom.TabIndex = 0;
             // 
-            // column3
+            // tab1
             // 
-            this.column3.Text = "Progress";
-            this.column3.Width = 112;
+            this.tab1.Controls.Add(this.tableLayoutPanelTop);
+            this.tab1.Location = new System.Drawing.Point(4, 22);
+            this.tab1.Name = "tab1";
+            this.tab1.Padding = new System.Windows.Forms.Padding(3);
+            this.tab1.Size = new System.Drawing.Size(1896, 474);
+            this.tab1.TabIndex = 0;
+            this.tab1.Text = "Torrent Info";
+            this.tab1.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanelTop
+            // 
+            this.tableLayoutPanelTop.ColumnCount = 3;
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanelTop.Controls.Add(this.downloadedLbl, 0, 0);
+            this.tableLayoutPanelTop.Controls.Add(this.downloadedProgressBar, 1, 0);
+            this.tableLayoutPanelTop.Controls.Add(this.downloadedPercentLbl, 2, 0);
+            this.tableLayoutPanelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanelTop.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanelTop.Name = "tableLayoutPanelTop";
+            this.tableLayoutPanelTop.RowCount = 2;
+            this.tableLayoutPanelTop.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanelTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelTop.Size = new System.Drawing.Size(1890, 77);
+            this.tableLayoutPanelTop.TabIndex = 1;
+            // 
+            // downloadedLbl
+            // 
+            this.downloadedLbl.AutoSize = true;
+            this.downloadedLbl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.downloadedLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.downloadedLbl.ForeColor = System.Drawing.Color.Blue;
+            this.downloadedLbl.Location = new System.Drawing.Point(3, 0);
+            this.downloadedLbl.Name = "downloadedLbl";
+            this.downloadedLbl.Size = new System.Drawing.Size(80, 29);
+            this.downloadedLbl.TabIndex = 0;
+            this.downloadedLbl.Text = "Downloaded:";
+            this.downloadedLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // downloadedProgressBar
+            // 
+            this.downloadedProgressBar.ForeColor = System.Drawing.Color.Blue;
+            this.downloadedProgressBar.Location = new System.Drawing.Point(89, 3);
+            this.downloadedProgressBar.Name = "downloadedProgressBar";
+            this.downloadedProgressBar.Size = new System.Drawing.Size(1750, 23);
+            this.downloadedProgressBar.TabIndex = 1;
+            // 
+            // downloadedPercentLbl
+            // 
+            this.downloadedPercentLbl.AutoSize = true;
+            this.downloadedPercentLbl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.downloadedPercentLbl.ForeColor = System.Drawing.Color.Blue;
+            this.downloadedPercentLbl.Location = new System.Drawing.Point(1845, 0);
+            this.downloadedPercentLbl.Name = "downloadedPercentLbl";
+            this.downloadedPercentLbl.Size = new System.Drawing.Size(30, 29);
+            this.downloadedPercentLbl.TabIndex = 2;
+            this.downloadedPercentLbl.Text = "0.0%";
+            this.downloadedPercentLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tab2
+            // 
+            this.tab2.Location = new System.Drawing.Point(4, 22);
+            this.tab2.Name = "tab2";
+            this.tab2.Size = new System.Drawing.Size(1896, 474);
+            this.tab2.TabIndex = 2;
+            this.tab2.Text = "Clients";
+            this.tab2.UseVisualStyleBackColor = true;
+            // 
+            // tab3
+            // 
+            this.tab3.Location = new System.Drawing.Point(4, 22);
+            this.tab3.Name = "tab3";
+            this.tab3.Size = new System.Drawing.Size(1896, 474);
+            this.tab3.TabIndex = 3;
+            this.tab3.Text = "Trackers";
+            this.tab3.UseVisualStyleBackColor = true;
+            // 
+            // tab4
+            // 
+            this.tab4.Location = new System.Drawing.Point(4, 22);
+            this.tab4.Name = "tab4";
+            this.tab4.Padding = new System.Windows.Forms.Padding(3);
+            this.tab4.Size = new System.Drawing.Size(1896, 474);
+            this.tab4.TabIndex = 1;
+            this.tab4.Text = "Graphs";
+            this.tab4.UseVisualStyleBackColor = true;
             // 
             // cMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1137, 663);
+            this.ClientSize = new System.Drawing.Size(1904, 1041);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.mainToolStrip);
+            this.Controls.Add(this.mainToolStripTop);
             this.Name = "cMainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bitload";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.cMainForm_FormClosing);
-            this.mainToolStrip.ResumeLayout(false);
-            this.mainToolStrip.PerformLayout();
+            this.mainToolStripTop.ResumeLayout(false);
+            this.mainToolStripTop.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.mainToolStripBottom.ResumeLayout(false);
+            this.tab1.ResumeLayout(false);
+            this.tableLayoutPanelTop.ResumeLayout(false);
+            this.tableLayoutPanelTop.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -177,14 +284,21 @@
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem addTorrentFileToolStrip;
         private System.Windows.Forms.ToolStripButton settingsToolStrip;
-        private System.Windows.Forms.ToolStrip mainToolStrip;
+        private System.Windows.Forms.ToolStrip mainToolStripTop;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ListView mainListView;
         private System.Windows.Forms.ColumnHeader column0;
         private System.Windows.Forms.ColumnHeader column1;
         private System.Windows.Forms.ColumnHeader column2;
-        private System.Windows.Forms.ProgressBar progressBar;
-        private System.Windows.Forms.ColumnHeader column3;
+        private System.Windows.Forms.TabControl mainToolStripBottom;
+        private System.Windows.Forms.TabPage tab1;
+        private System.Windows.Forms.TabPage tab4;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelTop;
+        private System.Windows.Forms.Label downloadedLbl;
+        private System.Windows.Forms.TabPage tab2;
+        private System.Windows.Forms.TabPage tab3;
+        public System.Windows.Forms.ProgressBar downloadedProgressBar;
+        public System.Windows.Forms.Label downloadedPercentLbl;
+        private System.Windows.Forms.ListView mainListView;
     }
 }
 

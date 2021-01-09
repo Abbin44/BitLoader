@@ -12,5 +12,8 @@ namespace Torrent
         public string defaultSavePath { get; set; }
         public int defaultMaxDownloadSpeed { get; set; }
         public int defaultMaxUploadSpeed { get; set; }
+        public bool unlimitedDownloadSpeed { get; set; }
+        public bool unlimitedUploadSpeed { get; set; }
+
     }
 }

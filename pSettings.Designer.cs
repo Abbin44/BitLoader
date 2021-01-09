@@ -41,12 +41,12 @@
             this.downloadSpeedLbl = new System.Windows.Forms.Label();
             this.downloadSpeedSelector = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.applyBtn = new System.Windows.Forms.Button();
-            this.cancelBtn = new System.Windows.Forms.Button();
-            this.unlimitedDownSpeedChk = new System.Windows.Forms.CheckBox();
             this.unlimitedDownSpeedLbl = new System.Windows.Forms.Label();
             this.unlimitedUpSpeedLbl = new System.Windows.Forms.Label();
             this.unlimitedUpSpeedChk = new System.Windows.Forms.CheckBox();
+            this.unlimitedDownSpeedChk = new System.Windows.Forms.CheckBox();
+            this.applyBtn = new System.Windows.Forms.Button();
+            this.cancelBtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uploadSpeedSelector)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.downloadSpeedSelector)).BeginInit();
@@ -140,6 +140,11 @@
             0,
             0,
             0});
+            this.uploadSpeedSelector.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
             this.uploadSpeedSelector.Name = "uploadSpeedSelector";
             this.uploadSpeedSelector.Size = new System.Drawing.Size(73, 20);
             this.uploadSpeedSelector.TabIndex = 13;
@@ -180,6 +185,11 @@
             0,
             0,
             0});
+            this.downloadSpeedSelector.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
             this.downloadSpeedSelector.Name = "downloadSpeedSelector";
             this.downloadSpeedSelector.Size = new System.Drawing.Size(72, 20);
             this.downloadSpeedSelector.TabIndex = 11;
@@ -215,36 +225,6 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(284, 153);
             this.tableLayoutPanel2.TabIndex = 14;
             // 
-            // applyBtn
-            // 
-            this.applyBtn.Location = new System.Drawing.Point(464, 168);
-            this.applyBtn.Name = "applyBtn";
-            this.applyBtn.Size = new System.Drawing.Size(75, 23);
-            this.applyBtn.TabIndex = 15;
-            this.applyBtn.Text = "Apply";
-            this.applyBtn.UseVisualStyleBackColor = true;
-            this.applyBtn.Click += new System.EventHandler(this.applyBtn_Click);
-            // 
-            // cancelBtn
-            // 
-            this.cancelBtn.Location = new System.Drawing.Point(383, 168);
-            this.cancelBtn.Name = "cancelBtn";
-            this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 16;
-            this.cancelBtn.Text = "Cancel";
-            this.cancelBtn.UseVisualStyleBackColor = true;
-            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
-            // 
-            // unlimitedDownSpeedChk
-            // 
-            this.unlimitedDownSpeedChk.AutoSize = true;
-            this.unlimitedDownSpeedChk.Location = new System.Drawing.Point(144, 29);
-            this.unlimitedDownSpeedChk.Name = "unlimitedDownSpeedChk";
-            this.unlimitedDownSpeedChk.Size = new System.Drawing.Size(15, 14);
-            this.unlimitedDownSpeedChk.TabIndex = 14;
-            this.unlimitedDownSpeedChk.UseVisualStyleBackColor = true;
-            this.unlimitedDownSpeedChk.CheckedChanged += new System.EventHandler(this.unlimitedDownSpeedChk_CheckedChanged);
-            // 
             // unlimitedDownSpeedLbl
             // 
             this.unlimitedDownSpeedLbl.AutoSize = true;
@@ -274,6 +254,36 @@
             this.unlimitedUpSpeedChk.TabIndex = 17;
             this.unlimitedUpSpeedChk.UseVisualStyleBackColor = true;
             this.unlimitedUpSpeedChk.CheckedChanged += new System.EventHandler(this.unlimitedUpSpeedChk_CheckedChanged);
+            // 
+            // unlimitedDownSpeedChk
+            // 
+            this.unlimitedDownSpeedChk.AutoSize = true;
+            this.unlimitedDownSpeedChk.Location = new System.Drawing.Point(144, 29);
+            this.unlimitedDownSpeedChk.Name = "unlimitedDownSpeedChk";
+            this.unlimitedDownSpeedChk.Size = new System.Drawing.Size(15, 14);
+            this.unlimitedDownSpeedChk.TabIndex = 14;
+            this.unlimitedDownSpeedChk.UseVisualStyleBackColor = true;
+            this.unlimitedDownSpeedChk.CheckedChanged += new System.EventHandler(this.unlimitedDownSpeedChk_CheckedChanged);
+            // 
+            // applyBtn
+            // 
+            this.applyBtn.Location = new System.Drawing.Point(464, 168);
+            this.applyBtn.Name = "applyBtn";
+            this.applyBtn.Size = new System.Drawing.Size(75, 23);
+            this.applyBtn.TabIndex = 15;
+            this.applyBtn.Text = "Apply";
+            this.applyBtn.UseVisualStyleBackColor = true;
+            this.applyBtn.Click += new System.EventHandler(this.applyBtn_Click);
+            // 
+            // cancelBtn
+            // 
+            this.cancelBtn.Location = new System.Drawing.Point(383, 168);
+            this.cancelBtn.Name = "cancelBtn";
+            this.cancelBtn.Size = new System.Drawing.Size(75, 23);
+            this.cancelBtn.TabIndex = 16;
+            this.cancelBtn.Text = "Cancel";
+            this.cancelBtn.UseVisualStyleBackColor = true;
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // pSettings
             // 

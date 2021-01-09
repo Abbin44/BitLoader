@@ -28,85 +28,32 @@ namespace Torrent
             Thread.Sleep(100);
             settings.Close();
         }
-        public Session LibTorrentSession { get; private set; }
         public int maxUploadSpeed;
         public int maxDownloadSpeed;
         public string saveFilePath = "";
         public string torrentFilePath = "";
-
-        public void AddTorrent()
-        {
-            try
-            {
-                if (!IsDisposed)
-                {
-                    byte[] bytes = File.ReadAllBytes(torrentFilePath);
-                    TorrentInfo ti = new TorrentInfo(bytes);
-                    using (var session = new Session())
-                    {
-                        // Make the session listen on a port in the range 6881-6889
-                        session.ListenOn(6881, 6889);
-
-                        AddTorrentParams addParams = new AddTorrentParams
-                        {
-                            DownloadLimit = maxDownloadSpeed * 1024,//Transform byte to kB
-                            UploadLimit = maxUploadSpeed * 1024,
-
-                            TorrentInfo = ti,
-                            SavePath = saveFilePath,
-                        };
-                        // Add a torrent to the session and get a `TorrentHandle` in return.
-                        TorrentHandle handle = session.AddTorrent(addParams);
-                        AddToList(ti.Name, ti.TotalSize);
-
-                        while (true)
-                        {
-                            // Get a `TorrentStatus` instance from the handle.
-                            var status = handle.QueryStatus();
-
-                            // If we are seeding, our job here is done.
-                            if (status.IsSeeding)
-                            {
-                                break;
-                            }
-
-                            // Print our progress and sleep for a bit.
-                            float downloaded = status.Progress * 100;
-                            #region Progress Bar 
-                            float progress = 0.0f;
-                            if (downloaded > progress + 1 && downloaded < progress + 2)//Fix this garbage
-                            {
-                                progress = downloaded;
-                                progressBar.Increment(1);
-                            }
-                            #endregion
-                            Console.WriteLine("{0}% downloaded", downloaded);
-                            EditList(downloaded.ToString());
-                            Thread.Sleep(1000);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "AddTorrent -- " + ex, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
+        bool unlimitedDownloadSpeed;
+        bool unlimitedUploadSpeed;
         public void AddToList(string name, long size)//Only sets the values once
         {
             if (!IsDisposed)
             {
                 string totalSize = FormatBytes(size);
+                mainListView.BeginUpdate();
                 mainListView.Items[0].SubItems[0].Text = name;
                 mainListView.Items[0].SubItems[1].Text = totalSize;
                 mainListView.Items[0].SubItems[2].Text = "0%";
+                mainListView.EndUpdate();
+                mainListView.Invalidate();
+                mainListView.RedrawItems(0, 0, false);
             }
-        }     
+        }
         public void EditList(string downloaded) //A method that sets all the values that need to be updated
         {
             if (!IsDisposed)
             {
+                downloadedPercentLbl.Text = downloaded + "%"; //Percent after the progress bar in the lower tab page
+
                 mainListView.Items[0].SubItems[2].Text = downloaded + "%";
             }
         }
@@ -123,11 +70,6 @@ namespace Torrent
 
             return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
-        public void SaveTorrentResumeData() //SAVE BYTES TO REMEMBER PROGRESS IF TORRENT IS CLOSED
-        {
-            //handle.SaveResumeData();
-
-        }
 
         #region Events
         private void addTorrentFileToolStrip_Click(object sender, EventArgs e)
@@ -138,12 +80,15 @@ namespace Torrent
 
             maxUploadSpeed = at.GetMaxUploadSpeed();
             maxDownloadSpeed = at.GetMaxDownloadSpeed();
-            torrentFilePath = at.GetAddTorrentFilePath();
             saveFilePath = at.GetSaveFilePath();
+            torrentFilePath = at.GetAddTorrentFilePath();
+            unlimitedDownloadSpeed = at.GetUnlimitedDownloadSpeed();
+            unlimitedUploadSpeed = at.GetUnlimitedUploadSpeed();
 
             if (!string.IsNullOrWhiteSpace(torrentFilePath))
             {
-                new Thread(AddTorrent).Start();
+                TorrentDownloader downloader = new TorrentDownloader(maxUploadSpeed, maxDownloadSpeed, saveFilePath, torrentFilePath, unlimitedDownloadSpeed, unlimitedUploadSpeed);
+                new Thread(downloader.AddTorrent).Start();
             }
         }
         private void settingsToolStrip_Click(object sender, EventArgs e)
@@ -157,6 +102,5 @@ namespace Torrent
             Environment.Exit(Environment.ExitCode);
         }
         #endregion
-
     }
 }

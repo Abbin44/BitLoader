@@ -90,6 +90,9 @@
     <Compile Include="pSettings.Designer.cs">
       <DependentUpon>pSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="TorrentDownloader.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
