@@ -22,9 +22,9 @@ namespace Torrent
         public int maxDownloadSpeed;
         public string saveFilePath = "";
         public string torrentFilePath = "";
-        bool unlimitedDownloadSpeed;
-        bool unlimitedUploadSpeed;
-
+        public bool unlimitedDownloadSpeed;
+        public bool unlimitedUploadSpeed;
+        public float downloaded { get; set; }
         public TorrentDownloader(int uploadSpeed, int downloadSpeed, string savePath, string torrentPath, bool unlimitedDownSpeed, bool unlimitedUpSpeed)
         {
             maxUploadSpeed = uploadSpeed;
@@ -65,7 +65,7 @@ namespace Torrent
 
                         // Add a torrent to the session and get a `TorrentHandle` in return.
                         TorrentHandle handle = session.AddTorrent(addParams);
-                        mainForm.AddToList(ti.Name, ti.TotalSize);
+                        mainForm.RunOnUIThread(() => { mainForm.AddToList(ti.Name, ti.TotalSize); });
 
                         while (true)
                         {
@@ -79,7 +79,7 @@ namespace Torrent
                             }
 
                             // Print our progress and sleep for a bit.
-                            float downloaded = status.Progress * 100;
+                            downloaded = status.Progress * 100;
                             #region Progress Bar 
                             float progress = 0.0f;
                             if (downloaded > progress + 1 && downloaded < progress + 2)//Fix this garbage
@@ -88,9 +88,10 @@ namespace Torrent
                                 mainForm.downloadedProgressBar.Increment(1);
                             }
                             #endregion
+
                             Console.WriteLine("{0}% downloaded", downloaded);
-                            mainForm.EditList(downloaded.ToString());
-                            Thread.Sleep(1000);
+                            mainForm.RunOnUIThread(() => { mainForm.EditList(downloaded.ToString()); });
+                            Thread.Sleep(1);
                         }
                     }
                 }

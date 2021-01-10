@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -28,24 +29,28 @@ namespace Torrent
             Thread.Sleep(100);
             settings.Close();
         }
+        ConcurrentQueue<Action> toRunOnUI = new ConcurrentQueue<Action>();
         public int maxUploadSpeed;
         public int maxDownloadSpeed;
         public string saveFilePath = "";
         public string torrentFilePath = "";
         bool unlimitedDownloadSpeed;
         bool unlimitedUploadSpeed;
+
+        public void RunOnUIThread(Action a)
+        {
+            toRunOnUI.Enqueue(a);
+        }
+
         public void AddToList(string name, long size)//Only sets the values once
         {
             if (!IsDisposed)
             {
                 string totalSize = FormatBytes(size);
-                mainListView.BeginUpdate();
                 mainListView.Items[0].SubItems[0].Text = name;
                 mainListView.Items[0].SubItems[1].Text = totalSize;
                 mainListView.Items[0].SubItems[2].Text = "0%";
-                mainListView.EndUpdate();
-                mainListView.Invalidate();
-                mainListView.RedrawItems(0, 0, false);
+
             }
         }
         public void EditList(string downloaded) //A method that sets all the values that need to be updated
@@ -53,7 +58,6 @@ namespace Torrent
             if (!IsDisposed)
             {
                 downloadedPercentLbl.Text = downloaded + "%"; //Percent after the progress bar in the lower tab page
-
                 mainListView.Items[0].SubItems[2].Text = downloaded + "%";
             }
         }
@@ -72,13 +76,29 @@ namespace Torrent
         }
 
         #region Events
+        private void mainTimer_Tick(object sender, EventArgs e)
+        {
+            Action temp;
+            while (toRunOnUI.TryDequeue(out temp))
+            {
+                try
+                {
+                    temp();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error during callback: {temp}:\n{ex}");
+                }
+            }
+        }
+        TorrentDownloader downloader;
         private void addTorrentFileToolStrip_Click(object sender, EventArgs e)
         {
             pAddTorrent at = new pAddTorrent();
             at.StartPosition = FormStartPosition.CenterScreen;
             at.ShowDialog();
 
-            maxUploadSpeed = at.GetMaxUploadSpeed();
+            maxUploadSpeed = at.GetMaxUploadSpeed();//Fix bug here where it crashes if you close the addtorrent popup.
             maxDownloadSpeed = at.GetMaxDownloadSpeed();
             saveFilePath = at.GetSaveFilePath();
             torrentFilePath = at.GetAddTorrentFilePath();
@@ -87,8 +107,9 @@ namespace Torrent
 
             if (!string.IsNullOrWhiteSpace(torrentFilePath))
             {
-                TorrentDownloader downloader = new TorrentDownloader(maxUploadSpeed, maxDownloadSpeed, saveFilePath, torrentFilePath, unlimitedDownloadSpeed, unlimitedUploadSpeed);
+                downloader = new TorrentDownloader(maxUploadSpeed, maxDownloadSpeed, saveFilePath, torrentFilePath, unlimitedDownloadSpeed, unlimitedUploadSpeed);
                 new Thread(downloader.AddTorrent).Start();
+                mainTimer.Start();
             }
         }
         private void settingsToolStrip_Click(object sender, EventArgs e)

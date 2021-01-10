@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cMainForm));
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "",
             "",
             "",
@@ -39,10 +40,6 @@
             this.settingsToolStrip = new System.Windows.Forms.ToolStripButton();
             this.mainToolStripTop = new System.Windows.Forms.ToolStrip();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.mainListView = new System.Windows.Forms.ListView();
-            this.column0 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.column1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.column2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mainToolStripBottom = new System.Windows.Forms.TabControl();
             this.tab1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanelTop = new System.Windows.Forms.TableLayoutPanel();
@@ -52,6 +49,11 @@
             this.tab2 = new System.Windows.Forms.TabPage();
             this.tab3 = new System.Windows.Forms.TabPage();
             this.tab4 = new System.Windows.Forms.TabPage();
+            this.mainTimer = new System.Windows.Forms.Timer(this.components);
+            this.mainListView = new System.Windows.Forms.ListView();
+            this.column1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.column2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.column3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mainToolStripTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -116,39 +118,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(1904, 1016);
             this.splitContainer1.SplitterDistance = 512;
             this.splitContainer1.TabIndex = 2;
-            // 
-            // mainListView
-            // 
-            this.mainListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column0,
-            this.column1,
-            this.column2});
-            this.mainListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainListView.FullRowSelect = true;
-            this.mainListView.HideSelection = false;
-            this.mainListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
-            this.mainListView.Location = new System.Drawing.Point(0, 0);
-            this.mainListView.Name = "mainListView";
-            this.mainListView.Size = new System.Drawing.Size(1904, 512);
-            this.mainListView.TabIndex = 0;
-            this.mainListView.UseCompatibleStateImageBehavior = false;
-            this.mainListView.View = System.Windows.Forms.View.Details;
-            // 
-            // column0
-            // 
-            this.column0.Text = "Name";
-            this.column0.Width = 191;
-            // 
-            // column1
-            // 
-            this.column1.Text = "Total Size";
-            this.column1.Width = 96;
-            // 
-            // column2
-            // 
-            this.column2.Text = "Downloaded";
-            this.column2.Width = 111;
             // 
             // mainToolStripBottom
             // 
@@ -220,9 +189,8 @@
             this.downloadedPercentLbl.ForeColor = System.Drawing.Color.Blue;
             this.downloadedPercentLbl.Location = new System.Drawing.Point(1845, 0);
             this.downloadedPercentLbl.Name = "downloadedPercentLbl";
-            this.downloadedPercentLbl.Size = new System.Drawing.Size(30, 29);
+            this.downloadedPercentLbl.Size = new System.Drawing.Size(0, 29);
             this.downloadedPercentLbl.TabIndex = 2;
-            this.downloadedPercentLbl.Text = "0.0%";
             this.downloadedPercentLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tab2
@@ -252,6 +220,43 @@
             this.tab4.TabIndex = 1;
             this.tab4.Text = "Graphs";
             this.tab4.UseVisualStyleBackColor = true;
+            // 
+            // mainTimer
+            // 
+            this.mainTimer.Interval = 1000;
+            this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
+            // 
+            // mainListView
+            // 
+            this.mainListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.column1,
+            this.column2,
+            this.column3});
+            this.mainListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainListView.HideSelection = false;
+            this.mainListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem2});
+            this.mainListView.Location = new System.Drawing.Point(0, 0);
+            this.mainListView.Name = "mainListView";
+            this.mainListView.Size = new System.Drawing.Size(1904, 512);
+            this.mainListView.TabIndex = 0;
+            this.mainListView.UseCompatibleStateImageBehavior = false;
+            this.mainListView.View = System.Windows.Forms.View.Details;
+            // 
+            // column1
+            // 
+            this.column1.Text = "Name";
+            this.column1.Width = 151;
+            // 
+            // column2
+            // 
+            this.column2.Text = "Total Size";
+            this.column2.Width = 162;
+            // 
+            // column3
+            // 
+            this.column3.Text = "Downloaded";
+            this.column3.Width = 122;
             // 
             // cMainForm
             // 
@@ -286,9 +291,6 @@
         private System.Windows.Forms.ToolStripButton settingsToolStrip;
         private System.Windows.Forms.ToolStrip mainToolStripTop;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ColumnHeader column0;
-        private System.Windows.Forms.ColumnHeader column1;
-        private System.Windows.Forms.ColumnHeader column2;
         private System.Windows.Forms.TabControl mainToolStripBottom;
         private System.Windows.Forms.TabPage tab1;
         private System.Windows.Forms.TabPage tab4;
@@ -298,7 +300,11 @@
         private System.Windows.Forms.TabPage tab3;
         public System.Windows.Forms.ProgressBar downloadedProgressBar;
         public System.Windows.Forms.Label downloadedPercentLbl;
+        private System.Windows.Forms.Timer mainTimer;
         private System.Windows.Forms.ListView mainListView;
+        private System.Windows.Forms.ColumnHeader column1;
+        private System.Windows.Forms.ColumnHeader column2;
+        private System.Windows.Forms.ColumnHeader column3;
     }
 }
 
