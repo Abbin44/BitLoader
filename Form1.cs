@@ -18,8 +18,15 @@ namespace Torrent
 {
     public partial class cMainForm : Form
     {
+        public static cMainForm mainForm { get; private set; }
+
         public cMainForm()
         {
+            if (mainForm != null) 
+                throw new Exception("Only one instance of cMainForm may ever exist!");
+
+            mainForm = this;
+               
             InitializeComponent();
             string settingsFolder = @"C:\Users\" + Environment.UserName + @"\AppData\Local\Bitloader"; //Use Environment.UserName Here for releases
             if (!Directory.Exists(settingsFolder))
@@ -30,6 +37,8 @@ namespace Torrent
             settings.Close();
         }
         ConcurrentQueue<Action> toRunOnUI = new ConcurrentQueue<Action>();
+        TorrentDownloader downloader;
+
         public int maxUploadSpeed;
         public int maxDownloadSpeed;
         public string saveFilePath = "";
@@ -50,7 +59,6 @@ namespace Torrent
                 mainListView.Items[0].SubItems[0].Text = name;
                 mainListView.Items[0].SubItems[1].Text = totalSize;
                 mainListView.Items[0].SubItems[2].Text = "0%";
-
             }
         }
         public void EditList(string downloaded) //A method that sets all the values that need to be updated
@@ -64,20 +72,26 @@ namespace Torrent
 
         private string FormatBytes(long bytes)
         {
-            string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
+            string[] suffix = { "B", "KB", "MB", "GB", "TB" };
             int i;
             double dblSByte = bytes;
-            for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
+            for (i = 0; i < suffix.Length && bytes >= 1024; i++, bytes /= 1024)
             {
                 dblSByte = bytes / 1024.0;
             }
 
-            return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+            return String.Format("{0:0.##} {1}", dblSByte, suffix[i]);
+        }
+        private void DrawGraph()
+        {
+            //Upload Speed
+            //Download Speed
         }
 
         #region Events
         private void mainTimer_Tick(object sender, EventArgs e)
         {
+            Console.WriteLine("REEE CLOCK IS TICKING");
             Action temp;
             while (toRunOnUI.TryDequeue(out temp))
             {
@@ -91,7 +105,7 @@ namespace Torrent
                 }
             }
         }
-        TorrentDownloader downloader;
+
         private void addTorrentFileToolStrip_Click(object sender, EventArgs e)
         {
             pAddTorrent at = new pAddTorrent();
@@ -118,10 +132,20 @@ namespace Torrent
             settings.StartPosition = FormStartPosition.CenterScreen;
             settings.Show();
         }
+        private void mainToolStripBottom_SelectedIndexChanged(object sender, EventArgs e) //Lägg till graf här
+        {
+            if (mainToolStripBottom.SelectedTab.Text == "Graphs")
+            {
+                Console.WriteLine("EEEEK");
+            }
+        }
         private void cMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Environment.Exit(Environment.ExitCode);
         }
+
         #endregion
+
+
     }
 }

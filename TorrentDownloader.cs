@@ -15,9 +15,9 @@ using Ragnar;
 
 namespace Torrent
 {
+
     class TorrentDownloader : Form
     {
-        cMainForm mainForm = new cMainForm();
         public int maxUploadSpeed;
         public int maxDownloadSpeed;
         public string saveFilePath = "";
@@ -25,6 +25,9 @@ namespace Torrent
         public bool unlimitedDownloadSpeed;
         public bool unlimitedUploadSpeed;
         public float downloaded { get; set; }
+        int uploadSpeed;
+        int downloadSpeed;
+
         public TorrentDownloader(int uploadSpeed, int downloadSpeed, string savePath, string torrentPath, bool unlimitedDownSpeed, bool unlimitedUpSpeed)
         {
             maxUploadSpeed = uploadSpeed;
@@ -65,7 +68,8 @@ namespace Torrent
 
                         // Add a torrent to the session and get a `TorrentHandle` in return.
                         TorrentHandle handle = session.AddTorrent(addParams);
-                        mainForm.RunOnUIThread(() => { mainForm.AddToList(ti.Name, ti.TotalSize); });
+
+                        cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToList(ti.Name, ti.TotalSize));
 
                         while (true)
                         {
@@ -80,18 +84,21 @@ namespace Torrent
 
                             // Print our progress and sleep for a bit.
                             downloaded = status.Progress * 100;
+                            uploadSpeed = status.UploadRate * 1024;
+                            downloadSpeed = status.DownloadRate * 1024;
+
                             #region Progress Bar 
                             float progress = 0.0f;
                             if (downloaded > progress + 1 && downloaded < progress + 2)//Fix this garbage
                             {
                                 progress = downloaded;
-                                mainForm.downloadedProgressBar.Increment(1);
+                                cMainForm.mainForm.downloadedProgressBar.Increment(1);
                             }
                             #endregion
 
-                            Console.WriteLine("{0}% downloaded", downloaded);
-                            mainForm.RunOnUIThread(() => { mainForm.EditList(downloaded.ToString()); });
-                            Thread.Sleep(1);
+                            //Console.WriteLine("{0}% downloaded", downloaded);
+                            cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditList(downloaded.ToString()));
+                            Thread.Sleep(100);
                         }
                     }
                 }

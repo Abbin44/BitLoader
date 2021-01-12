@@ -13,7 +13,7 @@ namespace Torrent
 {
     public partial class pSettings : Form
     {
-        string filePath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
+        string filePath = $@"C:\Users\" + Environment.UserName + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
         public DefaultSettings defaultSettings = new DefaultSettings();
         public pSettings()
         {
@@ -21,9 +21,7 @@ namespace Torrent
             if (!File.Exists(filePath))
                 SetDefaultValues();
             else
-            {
                 ReadSettingsFile();
-            }
         }
         public void ReadSettingsFile()
         {
@@ -100,9 +98,7 @@ namespace Torrent
             DialogResult dr = fbd.ShowDialog();
             string folderPath = string.Empty;
             if (dr == DialogResult.OK)
-            {
                 folderPath = fbd.SelectedPath;
-            }
 
             return folderPath;
         }
