@@ -30,11 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cMainForm));
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
-            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, ""),
-            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, ""),
-            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, ""),
-            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "", System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))))}, -1);
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.addTorrentFileToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStrip = new System.Windows.Forms.ToolStripButton();
@@ -44,8 +39,16 @@
             this.column1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.column2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.column3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.column4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.column5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeFromListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeDataTorrentFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainToolStripBottom = new System.Windows.Forms.TabControl();
             this.tab1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanelTop = new System.Windows.Forms.TableLayoutPanel();
@@ -53,19 +56,21 @@
             this.downloadedProgressBar = new System.Windows.Forms.ProgressBar();
             this.downloadedPercentLbl = new System.Windows.Forms.Label();
             this.tab2 = new System.Windows.Forms.TabPage();
+            this.clientListView = new System.Windows.Forms.ListView();
             this.tab3 = new System.Windows.Forms.TabPage();
             this.tab4 = new System.Windows.Forms.TabPage();
-            this.mainTimer = new System.Windows.Forms.Timer(this.components);
             this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
+            this.mainTimer = new System.Windows.Forms.Timer(this.components);
             this.mainToolStripTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.contextMenu.SuspendLayout();
             this.mainToolStripBottom.SuspendLayout();
             this.tab1.SuspendLayout();
             this.tableLayoutPanelTop.SuspendLayout();
+            this.tab2.SuspendLayout();
             this.tab4.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -126,22 +131,25 @@
             // 
             // mainListView
             // 
+            this.mainListView.BackColor = System.Drawing.SystemColors.Window;
             this.mainListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.column1,
             this.column2,
-            this.column3});
-            this.mainListView.ContextMenuStrip = this.contextMenuStrip1;
+            this.column3,
+            this.column4,
+            this.column5});
+            this.mainListView.ContextMenuStrip = this.contextMenu;
             this.mainListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainListView.FullRowSelect = true;
             this.mainListView.HideSelection = false;
-            this.mainListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
             this.mainListView.Location = new System.Drawing.Point(0, 0);
             this.mainListView.Name = "mainListView";
             this.mainListView.Size = new System.Drawing.Size(1904, 512);
             this.mainListView.TabIndex = 0;
             this.mainListView.UseCompatibleStateImageBehavior = false;
             this.mainListView.View = System.Windows.Forms.View.Details;
+            this.mainListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mainListView_MouseClick);
             // 
             // column1
             // 
@@ -158,18 +166,77 @@
             this.column3.Text = "Downloaded";
             this.column3.Width = 122;
             // 
-            // contextMenuStrip1
+            // column4
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.pauseToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(106, 26);
+            this.column4.Text = "Download Speed";
+            this.column4.Width = 97;
+            // 
+            // column5
+            // 
+            this.column5.Text = "Upload Speed";
+            this.column5.Width = 85;
+            // 
+            // contextMenu
+            // 
+            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pauseToolStripMenuItem,
+            this.startToolStripMenuItem,
+            this.stopToolStripMenuItem,
+            this.removeToolStripMenuItem});
+            this.contextMenu.Name = "contextMenuStrip1";
+            this.contextMenu.Size = new System.Drawing.Size(181, 114);
             // 
             // pauseToolStripMenuItem
             // 
             this.pauseToolStripMenuItem.Name = "pauseToolStripMenuItem";
-            this.pauseToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.pauseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pauseToolStripMenuItem.Text = "Pause";
+            this.pauseToolStripMenuItem.Click += new System.EventHandler(this.pauseToolStripMenuItem_Click);
+            // 
+            // startToolStripMenuItem
+            // 
+            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
+            // 
+            // stopToolStripMenuItem
+            // 
+            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stopToolStripMenuItem.Text = "Stop";
+            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeFromListToolStripMenuItem,
+            this.removeDataToolStripMenuItem,
+            this.removeDataTorrentFileToolStripMenuItem});
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            // 
+            // removeFromListToolStripMenuItem
+            // 
+            this.removeFromListToolStripMenuItem.Name = "removeFromListToolStripMenuItem";
+            this.removeFromListToolStripMenuItem.Size = new System.Drawing.Size(273, 22);
+            this.removeFromListToolStripMenuItem.Text = "Remove from list";
+            this.removeFromListToolStripMenuItem.Click += new System.EventHandler(this.removeFromListToolStripMenuItem_Click);
+            // 
+            // removeDataToolStripMenuItem
+            // 
+            this.removeDataToolStripMenuItem.Name = "removeDataToolStripMenuItem";
+            this.removeDataToolStripMenuItem.Size = new System.Drawing.Size(273, 22);
+            this.removeDataToolStripMenuItem.Text = "Remove from list + data ";
+            this.removeDataToolStripMenuItem.Click += new System.EventHandler(this.removeDataToolStripMenuItem_Click);
+            // 
+            // removeDataTorrentFileToolStripMenuItem
+            // 
+            this.removeDataTorrentFileToolStripMenuItem.Name = "removeDataTorrentFileToolStripMenuItem";
+            this.removeDataTorrentFileToolStripMenuItem.Size = new System.Drawing.Size(273, 22);
+            this.removeDataTorrentFileToolStripMenuItem.Text = "Remove from list +  data + torrent file";
+            this.removeDataTorrentFileToolStripMenuItem.Click += new System.EventHandler(this.removeDataTorrentFileToolStripMenuItem_Click);
             // 
             // mainToolStripBottom
             // 
@@ -248,12 +315,23 @@
             // 
             // tab2
             // 
+            this.tab2.Controls.Add(this.clientListView);
             this.tab2.Location = new System.Drawing.Point(4, 22);
             this.tab2.Name = "tab2";
             this.tab2.Size = new System.Drawing.Size(1896, 474);
             this.tab2.TabIndex = 2;
             this.tab2.Text = "Clients";
             this.tab2.UseVisualStyleBackColor = true;
+            // 
+            // clientListView
+            // 
+            this.clientListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.clientListView.HideSelection = false;
+            this.clientListView.Location = new System.Drawing.Point(0, 0);
+            this.clientListView.Name = "clientListView";
+            this.clientListView.Size = new System.Drawing.Size(1896, 474);
+            this.clientListView.TabIndex = 0;
+            this.clientListView.UseCompatibleStateImageBehavior = false;
             // 
             // tab3
             // 
@@ -275,11 +353,6 @@
             this.tab4.Text = "Graphs";
             this.tab4.UseVisualStyleBackColor = true;
             // 
-            // mainTimer
-            // 
-            this.mainTimer.Interval = 1000;
-            this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
-            // 
             // cartesianChart1
             // 
             this.cartesianChart1.Location = new System.Drawing.Point(459, 90);
@@ -287,6 +360,11 @@
             this.cartesianChart1.Size = new System.Drawing.Size(635, 276);
             this.cartesianChart1.TabIndex = 0;
             this.cartesianChart1.Text = "cartesianChart1";
+            // 
+            // mainTimer
+            // 
+            this.mainTimer.Interval = 1000;
+            this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
             // 
             // cMainForm
             // 
@@ -306,11 +384,12 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.contextMenu.ResumeLayout(false);
             this.mainToolStripBottom.ResumeLayout(false);
             this.tab1.ResumeLayout(false);
             this.tableLayoutPanelTop.ResumeLayout(false);
             this.tableLayoutPanelTop.PerformLayout();
+            this.tab2.ResumeLayout(false);
             this.tab4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -337,9 +416,18 @@
         private System.Windows.Forms.ColumnHeader column1;
         private System.Windows.Forms.ColumnHeader column2;
         private System.Windows.Forms.ColumnHeader column3;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private LiveCharts.WinForms.CartesianChart cartesianChart1;
+        private System.Windows.Forms.ColumnHeader column4;
+        private System.Windows.Forms.ColumnHeader column5;
+        private System.Windows.Forms.ListView clientListView;
+        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeFromListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeDataTorrentFileToolStripMenuItem;
     }
 }
 

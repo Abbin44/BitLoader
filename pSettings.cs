@@ -13,7 +13,7 @@ namespace Torrent
 {
     public partial class pSettings : Form
     {
-        string filePath = $@"C:\Users\" + Environment.UserName + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
+        string filePath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
         public DefaultSettings defaultSettings = new DefaultSettings();
         public pSettings()
         {

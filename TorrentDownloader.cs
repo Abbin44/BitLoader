@@ -18,15 +18,22 @@ namespace Torrent
 
     class TorrentDownloader : Form
     {
+        public TorrentInfo ti;
+        public TorrentHandle handle;
+        public Session session;
         public int maxUploadSpeed;
         public int maxDownloadSpeed;
         public string saveFilePath = "";
         public string torrentFilePath = "";
         public bool unlimitedDownloadSpeed;
         public bool unlimitedUploadSpeed;
+        public int uploadSpeed;
+        public int downloadSpeed;
+        public bool pause { get; set; }
         public float downloaded { get; set; }
-        int uploadSpeed;
-        int downloadSpeed;
+        public int torrentIndex { get; set; }
+
+
 
         public TorrentDownloader(int uploadSpeed, int downloadSpeed, string savePath, string torrentPath, bool unlimitedDownSpeed, bool unlimitedUpSpeed)
         {
@@ -46,10 +53,9 @@ namespace Torrent
                 if (!IsDisposed)
                 {
                     byte[] bytes = File.ReadAllBytes(torrentFilePath);
-                    TorrentInfo ti = new TorrentInfo(bytes);
-                    using (var session = new Session())
+                    ti = new TorrentInfo(bytes);
+                    using (session = new Session())
                     {
-                        // Make the session listen on a port in the range 6881-6889
                         session.ListenOn(6881, 6889);
 
                         #region Torrent Parameters
@@ -62,14 +68,17 @@ namespace Torrent
                             addParams.UploadLimit = maxUploadSpeed * 1024;
 
                         addParams.TorrentInfo = ti;
-                        addParams.SavePath = saveFilePath;
-
+                        addParams.SavePath = saveFilePath + @"\" + ti.Name;
                         #endregion
 
                         // Add a torrent to the session and get a `TorrentHandle` in return.
-                        TorrentHandle handle = session.AddTorrent(addParams);
+                        handle = session.AddTorrent(addParams);
+                        cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToMainList(ti.Name, ti.TotalSize, torrentIndex));
 
-                        cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToList(ti.Name, ti.TotalSize));
+                        if (pause == true)
+                            handle.Pause();
+                        else if (handle.IsPaused == true && pause == false)
+                            handle.Resume();
 
                         while (true)
                         {
@@ -97,7 +106,7 @@ namespace Torrent
                             #endregion
 
                             //Console.WriteLine("{0}% downloaded", downloaded);
-                            cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditList(downloaded.ToString()));
+                            cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditMainList(downloaded.ToString(), uploadSpeed, downloadSpeed, torrentIndex));
                             Thread.Sleep(100);
                         }
                     }
