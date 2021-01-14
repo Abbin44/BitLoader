@@ -16,7 +16,7 @@ using Ragnar;
 namespace Torrent
 {
 
-    class TorrentDownloader : Form
+    public class TorrentDownloader : Form
     {
         public TorrentInfo ti;
         public TorrentHandle handle;
@@ -32,9 +32,6 @@ namespace Torrent
         public bool pause { get; set; }
         public float downloaded { get; set; }
         public int torrentIndex { get; set; }
-
-
-
         public TorrentDownloader(int uploadSpeed, int downloadSpeed, string savePath, string torrentPath, bool unlimitedDownSpeed, bool unlimitedUpSpeed)
         {
             maxUploadSpeed = uploadSpeed;

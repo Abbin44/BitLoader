@@ -35,8 +35,12 @@ namespace Torrent
             pSettings settings = new pSettings();
             Thread.Sleep(100);
             settings.Close();
+
+            TorrentHandler handler = new TorrentHandler();
+            handler.ReadActiveTorrents();
         }
-        List<TorrentDownloader> downloadList = new List<TorrentDownloader>();
+        public List<string> activeTorrents = new List<string>();
+        public List<TorrentDownloader> downloadList = new List<TorrentDownloader>();
         ConcurrentQueue<Action> toRunOnUI = new ConcurrentQueue<Action>();
         TorrentDownloader downloader;
 
@@ -46,7 +50,7 @@ namespace Torrent
         public string torrentFilePath = "";
         bool unlimitedDownloadSpeed;
         bool unlimitedUploadSpeed;
-        int torrentIndex = 0;
+        public int torrentIndex = 0;
         int selectedItemIndex;
         public void RunOnUIThread(Action a)
         {
@@ -170,6 +174,7 @@ namespace Torrent
                 downloader = new TorrentDownloader(maxUploadSpeed, maxDownloadSpeed, saveFilePath, torrentFilePath, unlimitedDownloadSpeed, unlimitedUploadSpeed);
                 downloadList.Add(downloader);
                 downloader.torrentIndex = torrentIndex;
+                activeTorrents.Add(downloader.torrentFilePath);
                 new Thread(downloader.AddTorrent).Start();
                 mainTimer.Start();
             }
@@ -239,6 +244,9 @@ namespace Torrent
 
         private void cMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            TorrentHandler handler = new TorrentHandler();
+            handler.WriteActiveTorrents(activeTorrents);
+
             Environment.Exit(Environment.ExitCode);
         }
         #endregion

@@ -108,6 +108,7 @@
     <Compile Include="TorrentDownloader.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TorrentHandler.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
