@@ -63,7 +63,7 @@ namespace Torrent
                             addParams.UploadLimit = maxUploadSpeed * 1024;
 
                         addParams.TorrentInfo = ti;
-                        addParams.SavePath = saveFilePath + @"\" + ti.Name;
+                        addParams.SavePath = saveFilePath + @"\" + ti.Name; //This is weird, check it out later
 
                         string resumeFile = Path.ChangeExtension(torrentFilePath, "resume");
                         if (File.Exists(resumeFile))
@@ -127,7 +127,7 @@ namespace Torrent
 
             cMainForm.session.Pause();
             handle.SaveResumeData();
-            cMainForm.session.Pause();
+            cMainForm.session.Resume();
         }
     }
 }

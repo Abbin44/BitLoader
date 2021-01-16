@@ -21,25 +21,6 @@ namespace Torrent
         public static cMainForm mainForm { get; private set; }
         public static Session session { get; private set; }
 
-        public cMainForm()
-        {
-            if (mainForm != null) 
-                throw new Exception("Only one instance of cMainForm may ever exist!");
-
-            mainForm = this;
-               
-            InitializeComponent();
-            string settingsFolder = @"C:\Users\" + Environment.UserName + @"\AppData\Local\Bitloader"; //Use Environment.UserName Here for releases
-            if (!Directory.Exists(settingsFolder))
-                Directory.CreateDirectory(settingsFolder);
-
-            pSettings settings = new pSettings();
-            Thread.Sleep(100);
-            settings.Close();
-
-            TorrentHandler handler = new TorrentHandler();
-            handler.ReadActiveTorrents();
-        }
         public List<string> activeTorrents = new List<string>();
         public List<TorrentDownloader> downloadList = new List<TorrentDownloader>();
         ConcurrentQueue<Action> toRunOnUI = new ConcurrentQueue<Action>();
@@ -53,6 +34,34 @@ namespace Torrent
         bool unlimitedUploadSpeed;
         public int torrentIndex = 0;
         int selectedItemIndex;
+
+        readonly string activeTorrentsPath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\active_torrents.tor"; // Environment.UserName
+        public cMainForm()
+        {
+            if (mainForm != null) 
+                throw new Exception("Only one instance of cMainForm may ever exist!");
+
+            mainForm = this;
+
+            if(session != null)
+                throw new Exception("Only one instance of session may ever exist!");
+
+            session = new Session();
+
+            InitializeComponent();
+            string settingsFolder = @"C:\Users\" + Environment.UserName + @"\AppData\Local\Bitloader"; //Use Environment.UserName Here for releases
+            if (!Directory.Exists(settingsFolder))
+                Directory.CreateDirectory(settingsFolder);
+
+            pSettings settings = new pSettings();
+            Thread.Sleep(100);
+            settings.Close();
+
+            TorrentHandler handler = new TorrentHandler();
+            if(File.Exists(activeTorrentsPath))
+                handler.ReadActiveTorrents();
+        }
+
         public void RunOnUIThread(Action a)
         {
             toRunOnUI.Enqueue(a);
@@ -213,8 +222,11 @@ namespace Torrent
         }
 
         private void removeFromListToolStripMenuItem_Click(object sender, EventArgs e) //Remove only from list
-        {          
+        {
+            int index = GetTorrentIndexByName(mainListView.FocusedItem.Text);
+            downloadList[index].Close();
             RemoveFromList(selectedItemIndex);
+
             //Stop torrent here as well
         }
         private void removeDataToolStripMenuItem_Click(object sender, EventArgs e)//Remove from list + data
@@ -226,6 +238,7 @@ namespace Torrent
             savePath = downloadList[index].saveFilePath;
             torrentName = downloadList[index].ti.Name;
             session.RemoveTorrent(downloadList[index].handle, true);
+            downloadList[index].Close();
             RemoveFromList(selectedItemIndex);
         }
         private void removeDataTorrentFileToolStripMenuItem_Click(object sender, EventArgs e)//Remove from list + data + .torrent file
@@ -237,6 +250,7 @@ namespace Torrent
             if (File.Exists(filePath))//Remove torrent file
                 File.Delete(filePath);
 
+            downloadList[index].Close();
             RemoveFromList(selectedItemIndex);//Remove from list
         }
         #endregion

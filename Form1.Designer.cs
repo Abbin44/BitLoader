@@ -169,12 +169,12 @@
             // column4
             // 
             this.column4.Text = "Download Speed";
-            this.column4.Width = 97;
+            this.column4.Width = 118;
             // 
             // column5
             // 
             this.column5.Text = "Upload Speed";
-            this.column5.Width = 85;
+            this.column5.Width = 101;
             // 
             // contextMenu
             // 
