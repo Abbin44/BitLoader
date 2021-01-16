@@ -20,7 +20,6 @@ namespace Torrent
     {
         public TorrentInfo ti;
         public TorrentHandle handle;
-        public Session session;
         public int maxUploadSpeed;
         public int maxDownloadSpeed;
         public string saveFilePath = "";
@@ -41,7 +40,6 @@ namespace Torrent
             unlimitedDownloadSpeed = unlimitedDownSpeed;
             unlimitedUploadSpeed = unlimitedUpSpeed;
         }
-        //public Session LibTorrentSession { get; private set; }
 
         public void AddTorrent()
         {
@@ -51,9 +49,9 @@ namespace Torrent
                 {
                     byte[] bytes = File.ReadAllBytes(torrentFilePath);
                     ti = new TorrentInfo(bytes);
-                    using (session = new Session())
+                    using (cMainForm.session)
                     {
-                        session.ListenOn(6881, 6889);
+                        cMainForm.session.ListenOn(6881, 6889);
 
                         #region Torrent Parameters
                         AddTorrentParams addParams = new AddTorrentParams();
@@ -66,10 +64,17 @@ namespace Torrent
 
                         addParams.TorrentInfo = ti;
                         addParams.SavePath = saveFilePath + @"\" + ti.Name;
+
+                        string resumeFile = Path.ChangeExtension(torrentFilePath, "resume");
+                        if (File.Exists(resumeFile))
+                            addParams.ResumeData = File.ReadAllBytes(resumeFile);// Loading the resume data will load all torrents settings
                         #endregion
 
-                        // Add a torrent to the session and get a `TorrentHandle` in return.
-                        handle = session.AddTorrent(addParams);
+                        // Add a torrent to the session and get a `TorrentHandle` in return. There is only one session that contains many handles.
+                        handle = cMainForm.session.AddTorrent(addParams);
+                        if(handle.NeedSaveResumeData() == true)
+                           SaveResumeData();
+
                         cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToMainList(ti.Name, ti.TotalSize, torrentIndex));
 
                         if (pause == true)
@@ -84,14 +89,12 @@ namespace Torrent
 
                             // If we are seeding, our job here is done.
                             if (status.IsSeeding)
-                            {
                                 break;
-                            }
 
                             // Print our progress and sleep for a bit.
                             downloaded = status.Progress * 100;
-                            uploadSpeed = status.UploadRate * 1024;
-                            downloadSpeed = status.DownloadRate * 1024;
+                            uploadSpeed = status.UploadRate;
+                            downloadSpeed = status.DownloadRate;
 
                             #region Progress Bar 
                             float progress = 0.0f;
@@ -113,6 +116,18 @@ namespace Torrent
             {
                 MessageBox.Show(ex.ToString(), "AddTorrent -- " + ex, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public void SaveResumeData()
+        {
+            //WARNING 
+            //If you pause every torrent individually instead of pausing the session,
+            // every torrent will have its paused state saved in the resume data
+            //Pause and unpause when saving resume data to not fuck up the saved data.
+
+            cMainForm.session.Pause();
+            handle.SaveResumeData();
+            cMainForm.session.Pause();
         }
     }
 }

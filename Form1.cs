@@ -19,6 +19,7 @@ namespace Torrent
     public partial class cMainForm : Form
     {
         public static cMainForm mainForm { get; private set; }
+        public static Session session { get; private set; }
 
         public cMainForm()
         {
@@ -224,13 +225,19 @@ namespace Torrent
 
             savePath = downloadList[index].saveFilePath;
             torrentName = downloadList[index].ti.Name;
-            downloadList[index].session.RemoveTorrent(downloadList[index].handle, true);
+            session.RemoveTorrent(downloadList[index].handle, true);
             RemoveFromList(selectedItemIndex);
         }
         private void removeDataTorrentFileToolStripMenuItem_Click(object sender, EventArgs e)//Remove from list + data + .torrent file
         {
-            RemoveFromList(selectedItemIndex);
+            int index = GetTorrentIndexByName(mainListView.FocusedItem.Text);
+            session.RemoveTorrent(downloadList[index].handle, true);//Remove data
 
+            string filePath = downloadList[index].torrentFilePath;
+            if (File.Exists(filePath))//Remove torrent file
+                File.Delete(filePath);
+
+            RemoveFromList(selectedItemIndex);//Remove from list
         }
         #endregion
 
@@ -246,6 +253,12 @@ namespace Torrent
         {
             TorrentHandler handler = new TorrentHandler();
             handler.WriteActiveTorrents(activeTorrents);
+
+            for (int i = 0; i < downloadList.Count; i++) //Save resume data for all torrents that aren't finished.
+            {
+                if (!downloadList[i].handle.IsFinished)
+                    downloadList[i].SaveResumeData();
+            }
 
             Environment.Exit(Environment.ExitCode);
         }
