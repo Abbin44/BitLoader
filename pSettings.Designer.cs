@@ -140,11 +140,6 @@
             0,
             0,
             0});
-            this.uploadSpeedSelector.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.uploadSpeedSelector.Name = "uploadSpeedSelector";
             this.uploadSpeedSelector.Size = new System.Drawing.Size(73, 20);
             this.uploadSpeedSelector.TabIndex = 13;
@@ -185,11 +180,6 @@
             0,
             0,
             0});
-            this.downloadSpeedSelector.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
             this.downloadSpeedSelector.Name = "downloadSpeedSelector";
             this.downloadSpeedSelector.Size = new System.Drawing.Size(72, 20);
             this.downloadSpeedSelector.TabIndex = 11;
@@ -295,7 +285,8 @@
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "pSettings";
-            this.Text = "pSettings";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Default Settings";
             this.Load += new System.EventHandler(this.pSettings_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

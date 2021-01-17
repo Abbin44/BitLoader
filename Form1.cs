@@ -53,6 +53,7 @@ namespace Torrent
             if (!Directory.Exists(settingsFolder))
                 Directory.CreateDirectory(settingsFolder);
 
+            this.Show();
             pSettings settings = new pSettings();
             Thread.Sleep(100);
             settings.Close();
@@ -109,9 +110,13 @@ namespace Torrent
                 Directory.Delete(folder + torrentName, true);
         }
 
-        public void AddToClientList()
+        public void AddToClientList(string ip, int index)
         {
-
+            ListViewItem item = new ListViewItem(ip);
+            item.Tag = torrentIndex.ToString();
+            item.SubItems.Add("0%");
+            item.SubItems.Add("0%");
+            clientListView.Items.Add(item);
         }
         #endregion
         private string FormatBytes(long bytes)
@@ -129,12 +134,12 @@ namespace Torrent
 
         private int GetTorrentIndexByName(string torrentName)
         {
-            for (int i = 0; i < downloadList.Count; i++)
+            for (int i = 0; i < downloadList.Count; ++i)
             {
                 if (downloadList[i].ti.Name == torrentName)
                     return i;
             }
-            return 0; //<---- preferably don't want this here. Should theortically never be an issue though
+            return 0;
         }
 
         #region Events
@@ -232,11 +237,7 @@ namespace Torrent
         private void removeDataToolStripMenuItem_Click(object sender, EventArgs e)//Remove from list + data
         {
             int index = GetTorrentIndexByName(mainListView.FocusedItem.Text);
-            string savePath;
-            string torrentName;
 
-            savePath = downloadList[index].saveFilePath;
-            torrentName = downloadList[index].ti.Name;
             session.RemoveTorrent(downloadList[index].handle, true);
             downloadList[index].Close();
             RemoveFromList(selectedItemIndex);

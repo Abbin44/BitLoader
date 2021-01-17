@@ -61,6 +61,12 @@
             this.tab4 = new System.Windows.Forms.TabPage();
             this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
             this.mainTimer = new System.Windows.Forms.Timer(this.components);
+            this.ipHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mainToolStripTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -325,6 +331,13 @@
             // 
             // clientListView
             // 
+            this.clientListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ipHeader,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6});
             this.clientListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clientListView.HideSelection = false;
             this.clientListView.Location = new System.Drawing.Point(0, 0);
@@ -332,6 +345,7 @@
             this.clientListView.Size = new System.Drawing.Size(1896, 474);
             this.clientListView.TabIndex = 0;
             this.clientListView.UseCompatibleStateImageBehavior = false;
+            this.clientListView.View = System.Windows.Forms.View.Details;
             // 
             // tab3
             // 
@@ -365,6 +379,27 @@
             // 
             this.mainTimer.Interval = 1000;
             this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
+            // 
+            // ipHeader
+            // 
+            this.ipHeader.Text = "IP";
+            this.ipHeader.Width = 118;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Width = 136;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Width = 115;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Width = 97;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Width = 97;
             // 
             // cMainForm
             // 
@@ -428,6 +463,12 @@
         private System.Windows.Forms.ToolStripMenuItem removeDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeDataTorrentFileToolStripMenuItem;
         public System.Windows.Forms.Timer mainTimer;
+        private System.Windows.Forms.ColumnHeader ipHeader;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
     }
 }
 

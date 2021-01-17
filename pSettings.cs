@@ -18,8 +18,11 @@ namespace Torrent
         public pSettings()
         {
             InitializeComponent();
-            if (!File.Exists(filePath))
-                SetDefaultValues();
+            if (!File.Exists(filePath))//If it's the first time you start the program.
+            {
+                this.Text = "Please set default file paths";
+                this.ShowDialog();
+            }
             else
                 ReadSettingsFile();
         }
@@ -28,12 +31,12 @@ namespace Torrent
             List<string[]> settings = new List<string[]>();
             string[] lines = File.ReadAllLines(filePath);
 
-            for (int i = 0; i < lines.Length; i++)
+            for (int i = 0; i < lines.Length; ++i)
             {
                 settings.Add(lines[i].Split('>'));
             }
 
-            for (int i = 0; i < settings.Count; i++)
+            for (int i = 0; i < settings.Count; ++i)
             {
                 switch (settings[i][0])//Add new settings here (3 places total)
                 {
@@ -69,8 +72,9 @@ namespace Torrent
             string settings;
             if (!File.Exists(filePath))
             {
-                settings =  $@"TorrentPath>C:\Users" + Environment.UserName + $@"\Downloads" + Environment.NewLine +
-                            $@"SaveFolder>C:\Users" + Environment.UserName + $@"\Downloads" + Environment.NewLine +
+                //Change this to use string builder.
+                settings =  $@"TorrentPath>" + defaultTorrentPathTxt.Text + Environment.NewLine +
+                            $@"SaveFolder>" + defaultSavePathTxt.Text + Environment.NewLine +
                             @"MaxDownSpeed>" + downloadSpeedSelector.Value.ToString() + Environment.NewLine +
                             @"MaxUpSpeed>" + uploadSpeedSelector.Value.ToString() + Environment.NewLine +
                             @"UnlimitedDownSpeed>" + unlimitedDownSpeedChk.Checked.ToString() + Environment.NewLine +
@@ -80,6 +84,7 @@ namespace Torrent
             }
             else
             {
+                //Change this to use string builder.
                 settings = $@"TorrentPath>" + defaultSettings.defaultTorrentPath + Environment.NewLine +
                             @"SaveFolder>" + defaultSettings.defaultSavePath + Environment.NewLine +
                             @"MaxDownSpeed>" + defaultSettings.defaultMaxDownloadSpeed.ToString() + Environment.NewLine +
@@ -103,14 +108,28 @@ namespace Torrent
             return folderPath;
         }
 
+        private void WriteFile(string filePath, string text)
+        {
+
+        }
+
         #region Events
         private void pSettings_Load(object sender, EventArgs e)
         {
             //Fill all boxes with the settings from the read file method
+            if (this.Text == "Please set default file paths")
+            {
+                downloadSpeedSelector.Value = 500;
+                uploadSpeedSelector.Value = 500;
+            }
+            else
+            {
+                downloadSpeedSelector.Value = defaultSettings.defaultMaxDownloadSpeed;
+                uploadSpeedSelector.Value = defaultSettings.defaultMaxUploadSpeed;
+            }
+
             defaultTorrentPathTxt.Text = defaultSettings.defaultTorrentPath;
             defaultSavePathTxt.Text = defaultSettings.defaultSavePath;
-            downloadSpeedSelector.Value = defaultSettings.defaultMaxDownloadSpeed;
-            uploadSpeedSelector.Value = defaultSettings.defaultMaxUploadSpeed;
             unlimitedDownSpeedChk.Checked = defaultSettings.unlimitedDownloadSpeed;
             unlimitedUpSpeedChk.Checked = defaultSettings.unlimitedUploadSpeed;
         }
@@ -153,6 +172,19 @@ namespace Torrent
         }
         private void applyBtn_Click(object sender, EventArgs e)
         {
+            if(this.Text == "Please set default file paths") //Only happens first time you start the program
+            {
+                if(!string.IsNullOrWhiteSpace(defaultTorrentPathTxt.Text) || !string.IsNullOrWhiteSpace(defaultSavePathTxt.Text))
+                {
+                    SetDefaultValues();
+                    this.Close();
+                    return;
+                }
+                else
+                    MessageBox.Show("Please select valid file paths for both the save folder and torrent folder.", "Warning");
+
+            }
+
             if (unlimitedDownSpeedChk.Checked == false)
                 defaultSettings.defaultMaxDownloadSpeed = Convert.ToInt32(downloadSpeedSelector.Value);
 

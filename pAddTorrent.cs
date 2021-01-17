@@ -66,7 +66,8 @@ namespace Torrent
             if (settings.defaultSettings.unlimitedDownloadSpeed == true)
             {
                 downloadSpeedSelector.Enabled = false;
-                unlimitedDownLbl.Visible = true;
+                unlimitedDownSpeedBox.Checked = true;
+                unlimitedDownSpeedBox.Visible = true;
             }
             else
                 downloadSpeedSelector.Value = settings.defaultSettings.defaultMaxDownloadSpeed;
@@ -74,7 +75,8 @@ namespace Torrent
             if (settings.defaultSettings.unlimitedUploadSpeed == true)
             {
                 uploadSpeedSelector.Enabled = false;
-                unlimitedUploadLbl.Visible = true;
+                unlimitedUpSpeedBox.Checked = true;
+                unlimitedUpSpeedBox.Visible = true;
             }
             else
                 uploadSpeedSelector.Value = settings.defaultSettings.defaultMaxUploadSpeed;
@@ -109,10 +111,28 @@ namespace Torrent
             saveFilePathTxt.Text = saveFilePath;
         }
 
+        private void unlimitedDownSpeedBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (unlimitedDownSpeedBox.Checked == true)
+                downloadSpeedSelector.Enabled = false;
+            else
+                downloadSpeedSelector.Enabled = true;
+        }
+
+        private void unlimitedUpSpeedBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (unlimitedUpSpeedBox.Checked == true)
+                uploadSpeedSelector.Enabled = false;
+            else
+                uploadSpeedSelector.Enabled = true;
+        }
+
         private void addTorrentBtn_Click(object sender, EventArgs e)
         {
             maxUploadSpeed = Convert.ToInt32(uploadSpeedSelector.Value * 1024);
             maxDownloadSpeed = Convert.ToInt32(downloadSpeedSelector.Value * 1024);
+            unlimitedDownloadSpeed = unlimitedDownSpeedBox.Checked;
+            unlimitedUploadSpeed = unlimitedUpSpeedBox.Checked;
             this.Close();
         }
         #endregion

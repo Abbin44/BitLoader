@@ -28,6 +28,7 @@ namespace Torrent
         public bool unlimitedUploadSpeed;
         public int uploadSpeed;
         public int downloadSpeed;
+
         public bool pause { get; set; }
         public float downloaded { get; set; }
         public int torrentIndex { get; set; }
@@ -39,6 +40,7 @@ namespace Torrent
             torrentFilePath = torrentPath;
             unlimitedDownloadSpeed = unlimitedDownSpeed;
             unlimitedUploadSpeed = unlimitedUpSpeed;
+            pause = false;
         }
 
         public void AddTorrent()
@@ -76,18 +78,18 @@ namespace Torrent
                            SaveResumeData();
 
                         cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToMainList(ti.Name, ti.TotalSize, torrentIndex));
-
-                        if (pause == true)
-                            handle.Pause();
-                        else if (handle.IsPaused == true && pause == false)
-                            handle.Resume();
-
+                       
                         while (true)
                         {
+                            if (pause == true)
+                                PauseHandle();
+                            else if (handle.IsPaused == true && pause == false)
+                                ResumeHandle();
+
                             // Get a `TorrentStatus` instance from the handle.
                             TorrentStatus status = handle.QueryStatus();
 
-                            // If we are seeding, our job here is done.
+                            var connectedPeers = handle.GetPeerInfo();
                             if (status.IsSeeding)
                                 break;
 
@@ -105,7 +107,6 @@ namespace Torrent
                             }
                             #endregion
 
-                            //Console.WriteLine("{0}% downloaded", downloaded);
                             cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditMainList(downloaded.ToString(), uploadSpeed, downloadSpeed, torrentIndex));
                             Thread.Sleep(100);
                         }
@@ -116,6 +117,16 @@ namespace Torrent
             {
                 MessageBox.Show(ex.ToString(), "AddTorrent -- " + ex, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public void PauseHandle()
+        {
+            handle.Pause();
+        }
+
+        public void ResumeHandle()
+        {
+            handle.Resume();
         }
 
         public void SaveResumeData()

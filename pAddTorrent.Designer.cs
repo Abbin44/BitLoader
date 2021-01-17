@@ -37,14 +37,14 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.unlimitedUploadLbl = new System.Windows.Forms.Label();
             this.uploadSpeedSelector = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.downloadSpeedSelector = new System.Windows.Forms.NumericUpDown();
-            this.unlimitedDownLbl = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.addTorrentBtn = new System.Windows.Forms.Button();
+            this.unlimitedDownSpeedBox = new System.Windows.Forms.CheckBox();
+            this.unlimitedUpSpeedBox = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uploadSpeedSelector)).BeginInit();
@@ -140,37 +140,26 @@
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.Controls.Add(this.unlimitedUploadLbl, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.unlimitedUpSpeedBox, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.uploadSpeedSelector, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.label4, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.downloadSpeedSelector, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.unlimitedDownLbl, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.unlimitedDownSpeedBox, 0, 2);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(276, 13);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 4;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 9F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(328, 147);
             this.tableLayoutPanel2.TabIndex = 7;
-            // 
-            // unlimitedUploadLbl
-            // 
-            this.unlimitedUploadLbl.AutoSize = true;
-            this.unlimitedUploadLbl.ForeColor = System.Drawing.Color.Blue;
-            this.unlimitedUploadLbl.Location = new System.Drawing.Point(156, 42);
-            this.unlimitedUploadLbl.Name = "unlimitedUploadLbl";
-            this.unlimitedUploadLbl.Size = new System.Drawing.Size(121, 13);
-            this.unlimitedUploadLbl.TabIndex = 11;
-            this.unlimitedUploadLbl.Text = "Unlimited Upload Speed";
-            this.unlimitedUploadLbl.Visible = false;
             // 
             // uploadSpeedSelector
             // 
             this.uploadSpeedSelector.ForeColor = System.Drawing.Color.Blue;
-            this.uploadSpeedSelector.Location = new System.Drawing.Point(156, 18);
+            this.uploadSpeedSelector.Location = new System.Drawing.Point(165, 18);
             this.uploadSpeedSelector.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -190,7 +179,7 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.ForeColor = System.Drawing.Color.Blue;
-            this.label4.Location = new System.Drawing.Point(156, 1);
+            this.label4.Location = new System.Drawing.Point(165, 1);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(131, 13);
             this.label4.TabIndex = 6;
@@ -225,18 +214,6 @@
             0,
             0});
             // 
-            // unlimitedDownLbl
-            // 
-            this.unlimitedDownLbl.AutoSize = true;
-            this.unlimitedDownLbl.ForeColor = System.Drawing.Color.Blue;
-            this.unlimitedDownLbl.Location = new System.Drawing.Point(4, 42);
-            this.unlimitedDownLbl.Name = "unlimitedDownLbl";
-            this.unlimitedDownLbl.Size = new System.Drawing.Size(135, 13);
-            this.unlimitedDownLbl.TabIndex = 10;
-            this.unlimitedDownLbl.Text = "Unlimited Download Speed";
-            this.unlimitedDownLbl.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.unlimitedDownLbl.Visible = false;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -257,6 +234,32 @@
             this.addTorrentBtn.Text = "Add";
             this.addTorrentBtn.UseVisualStyleBackColor = true;
             this.addTorrentBtn.Click += new System.EventHandler(this.addTorrentBtn_Click);
+            // 
+            // unlimitedDownSpeedBox
+            // 
+            this.unlimitedDownSpeedBox.AutoSize = true;
+            this.unlimitedDownSpeedBox.ForeColor = System.Drawing.Color.Blue;
+            this.unlimitedDownSpeedBox.Location = new System.Drawing.Point(4, 45);
+            this.unlimitedDownSpeedBox.Name = "unlimitedDownSpeedBox";
+            this.unlimitedDownSpeedBox.Size = new System.Drawing.Size(154, 17);
+            this.unlimitedDownSpeedBox.TabIndex = 12;
+            this.unlimitedDownSpeedBox.Text = "Unlimited Download Speed";
+            this.unlimitedDownSpeedBox.UseVisualStyleBackColor = true;
+            this.unlimitedDownSpeedBox.Visible = false;
+            this.unlimitedDownSpeedBox.CheckedChanged += new System.EventHandler(this.unlimitedDownSpeedBox_CheckedChanged);
+            // 
+            // unlimitedUpSpeedBox
+            // 
+            this.unlimitedUpSpeedBox.AutoSize = true;
+            this.unlimitedUpSpeedBox.ForeColor = System.Drawing.Color.Blue;
+            this.unlimitedUpSpeedBox.Location = new System.Drawing.Point(165, 45);
+            this.unlimitedUpSpeedBox.Name = "unlimitedUpSpeedBox";
+            this.unlimitedUpSpeedBox.Size = new System.Drawing.Size(140, 17);
+            this.unlimitedUpSpeedBox.TabIndex = 13;
+            this.unlimitedUpSpeedBox.Text = "Unlimited Upload Speed";
+            this.unlimitedUpSpeedBox.UseVisualStyleBackColor = true;
+            this.unlimitedUpSpeedBox.Visible = false;
+            this.unlimitedUpSpeedBox.CheckedChanged += new System.EventHandler(this.unlimitedUpSpeedBox_CheckedChanged);
             // 
             // pAddTorrent
             // 
@@ -294,11 +297,11 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label unlimitedDownLbl;
         private System.Windows.Forms.NumericUpDown downloadSpeedSelector;
         private System.Windows.Forms.NumericUpDown uploadSpeedSelector;
-        private System.Windows.Forms.Label unlimitedUploadLbl;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button addTorrentBtn;
+        private System.Windows.Forms.CheckBox unlimitedDownSpeedBox;
+        private System.Windows.Forms.CheckBox unlimitedUpSpeedBox;
     }
 }
