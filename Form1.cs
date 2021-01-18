@@ -110,13 +110,25 @@ namespace Torrent
                 Directory.Delete(folder + torrentName, true);
         }
 
-        public void AddToClientList(string ip, int index)
+        public void AddToClientList(IEnumerable<PeerInfo> peers, int index)
         {
-            ListViewItem item = new ListViewItem(ip);
-            item.Tag = torrentIndex.ToString();
-            item.SubItems.Add("0%");
-            item.SubItems.Add("0%");
-            clientListView.Items.Add(item);
+            string uploadSpeed;
+            string downloadSpeed;
+            ListViewItem item;
+            foreach (PeerInfo peer in peers)
+            {
+                downloadSpeed = FormatBytes(peer.DownSpeed);
+                uploadSpeed = FormatBytes(peer.UpSpeed);
+                item = new ListViewItem(peer.EndPoint.ToString());
+                item.Tag = torrentIndex.ToString();
+                item.SubItems.Add(peer.Client);//Client
+                item.SubItems.Add((peer.TotalDownload * 100).ToString());//Downloaded %
+                item.SubItems.Add(downloadSpeed);//Download speed TO peer
+                item.SubItems.Add(uploadSpeed);//Upload speed TO peer
+                clientListView.Items.Add(item);
+            }
+
+
         }
         #endregion
         private string FormatBytes(long bytes)

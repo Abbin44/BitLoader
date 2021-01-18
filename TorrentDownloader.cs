@@ -89,11 +89,11 @@ namespace Torrent
                             // Get a `TorrentStatus` instance from the handle.
                             TorrentStatus status = handle.QueryStatus();
 
-                            var connectedPeers = handle.GetPeerInfo();
+                            IEnumerable<PeerInfo> connectedPeers = handle.GetPeerInfo();
+
                             if (status.IsSeeding)
                                 break;
 
-                            // Print our progress and sleep for a bit.
                             downloaded = status.Progress * 100;
                             uploadSpeed = status.UploadRate;
                             downloadSpeed = status.DownloadRate;
@@ -106,6 +106,9 @@ namespace Torrent
                                 cMainForm.mainForm.downloadedProgressBar.Increment(1);
                             }
                             #endregion
+
+                            if(connectedPeers.Count() > 0)
+                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToClientList(connectedPeers, torrentIndex));
 
                             cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditMainList(downloaded.ToString(), uploadSpeed, downloadSpeed, torrentIndex));
                             Thread.Sleep(100);

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cMainForm));
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.addTorrentFileToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStrip = new System.Windows.Forms.ToolStripButton();
@@ -55,18 +54,25 @@
             this.downloadedLbl = new System.Windows.Forms.Label();
             this.downloadedProgressBar = new System.Windows.Forms.ProgressBar();
             this.downloadedPercentLbl = new System.Windows.Forms.Label();
-            this.tab2 = new System.Windows.Forms.TabPage();
-            this.clientListView = new System.Windows.Forms.ListView();
             this.tab3 = new System.Windows.Forms.TabPage();
+            this.clientListView = new System.Windows.Forms.ListView();
+            this.ipHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clientHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.downloadedHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.downSpeedHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.upSpeedHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tab4 = new System.Windows.Forms.TabPage();
+            this.tab5 = new System.Windows.Forms.TabPage();
             this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
             this.mainTimer = new System.Windows.Forms.Timer(this.components);
-            this.ipHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.trackerListView = new System.Windows.Forms.ListView();
+            this.nameHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.statusHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.sourcesHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.peerHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.downloadedHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.generalInfoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.tab2 = new System.Windows.Forms.TabPage();
             this.mainToolStripTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -76,8 +82,9 @@
             this.mainToolStripBottom.SuspendLayout();
             this.tab1.SuspendLayout();
             this.tableLayoutPanelTop.SuspendLayout();
-            this.tab2.SuspendLayout();
+            this.tab3.SuspendLayout();
             this.tab4.SuspendLayout();
+            this.tab5.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripDropDownButton1
@@ -85,7 +92,7 @@
             this.toolStripDropDownButton1.BackColor = System.Drawing.Color.White;
             this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addTorrentFileToolStrip});
-            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.Image = global::Torrent.Properties.Resources.Add;
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
             this.toolStripDropDownButton1.Size = new System.Drawing.Size(54, 22);
@@ -100,7 +107,7 @@
             // 
             // settingsToolStrip
             // 
-            this.settingsToolStrip.Image = ((System.Drawing.Image)(resources.GetObject("settingsToolStrip.Image")));
+            this.settingsToolStrip.Image = global::Torrent.Properties.Resources.Settings;
             this.settingsToolStrip.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.settingsToolStrip.Name = "settingsToolStrip";
             this.settingsToolStrip.Size = new System.Drawing.Size(69, 22);
@@ -250,6 +257,7 @@
             this.mainToolStripBottom.Controls.Add(this.tab2);
             this.mainToolStripBottom.Controls.Add(this.tab3);
             this.mainToolStripBottom.Controls.Add(this.tab4);
+            this.mainToolStripBottom.Controls.Add(this.tab5);
             this.mainToolStripBottom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainToolStripBottom.Location = new System.Drawing.Point(0, 0);
             this.mainToolStripBottom.Name = "mainToolStripBottom";
@@ -260,6 +268,7 @@
             // 
             // tab1
             // 
+            this.tab1.Controls.Add(this.generalInfoTableLayoutPanel);
             this.tab1.Controls.Add(this.tableLayoutPanelTop);
             this.tab1.Location = new System.Drawing.Point(4, 22);
             this.tab1.Name = "tab1";
@@ -283,8 +292,8 @@
             this.tableLayoutPanelTop.Name = "tableLayoutPanelTop";
             this.tableLayoutPanelTop.RowCount = 2;
             this.tableLayoutPanelTop.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelTop.Size = new System.Drawing.Size(1890, 77);
+            this.tableLayoutPanelTop.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanelTop.Size = new System.Drawing.Size(1890, 42);
             this.tableLayoutPanelTop.TabIndex = 1;
             // 
             // downloadedLbl
@@ -295,7 +304,7 @@
             this.downloadedLbl.ForeColor = System.Drawing.Color.Blue;
             this.downloadedLbl.Location = new System.Drawing.Point(3, 0);
             this.downloadedLbl.Name = "downloadedLbl";
-            this.downloadedLbl.Size = new System.Drawing.Size(80, 29);
+            this.downloadedLbl.Size = new System.Drawing.Size(80, 34);
             this.downloadedLbl.TabIndex = 0;
             this.downloadedLbl.Text = "Downloaded:";
             this.downloadedLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -305,7 +314,7 @@
             this.downloadedProgressBar.ForeColor = System.Drawing.Color.Blue;
             this.downloadedProgressBar.Location = new System.Drawing.Point(89, 3);
             this.downloadedProgressBar.Name = "downloadedProgressBar";
-            this.downloadedProgressBar.Size = new System.Drawing.Size(1750, 23);
+            this.downloadedProgressBar.Size = new System.Drawing.Size(1750, 28);
             this.downloadedProgressBar.TabIndex = 1;
             // 
             // downloadedPercentLbl
@@ -315,29 +324,28 @@
             this.downloadedPercentLbl.ForeColor = System.Drawing.Color.Blue;
             this.downloadedPercentLbl.Location = new System.Drawing.Point(1845, 0);
             this.downloadedPercentLbl.Name = "downloadedPercentLbl";
-            this.downloadedPercentLbl.Size = new System.Drawing.Size(0, 29);
+            this.downloadedPercentLbl.Size = new System.Drawing.Size(0, 34);
             this.downloadedPercentLbl.TabIndex = 2;
             this.downloadedPercentLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tab2
+            // tab3
             // 
-            this.tab2.Controls.Add(this.clientListView);
-            this.tab2.Location = new System.Drawing.Point(4, 22);
-            this.tab2.Name = "tab2";
-            this.tab2.Size = new System.Drawing.Size(1896, 474);
-            this.tab2.TabIndex = 2;
-            this.tab2.Text = "Clients";
-            this.tab2.UseVisualStyleBackColor = true;
+            this.tab3.Controls.Add(this.clientListView);
+            this.tab3.Location = new System.Drawing.Point(4, 22);
+            this.tab3.Name = "tab3";
+            this.tab3.Size = new System.Drawing.Size(1896, 474);
+            this.tab3.TabIndex = 2;
+            this.tab3.Text = "Clients";
+            this.tab3.UseVisualStyleBackColor = true;
             // 
             // clientListView
             // 
             this.clientListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ipHeader,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6});
+            this.clientHeader,
+            this.downloadedHeader,
+            this.downSpeedHeader,
+            this.upSpeedHeader});
             this.clientListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clientListView.HideSelection = false;
             this.clientListView.Location = new System.Drawing.Point(0, 0);
@@ -347,25 +355,51 @@
             this.clientListView.UseCompatibleStateImageBehavior = false;
             this.clientListView.View = System.Windows.Forms.View.Details;
             // 
-            // tab3
+            // ipHeader
             // 
-            this.tab3.Location = new System.Drawing.Point(4, 22);
-            this.tab3.Name = "tab3";
-            this.tab3.Size = new System.Drawing.Size(1896, 474);
-            this.tab3.TabIndex = 3;
-            this.tab3.Text = "Trackers";
-            this.tab3.UseVisualStyleBackColor = true;
+            this.ipHeader.Text = "IP";
+            this.ipHeader.Width = 125;
+            // 
+            // clientHeader
+            // 
+            this.clientHeader.Text = "Client";
+            this.clientHeader.Width = 136;
+            // 
+            // downloadedHeader
+            // 
+            this.downloadedHeader.Text = "Downloaded %";
+            this.downloadedHeader.Width = 115;
+            // 
+            // downSpeedHeader
+            // 
+            this.downSpeedHeader.Text = "Download Speed to Peer";
+            this.downSpeedHeader.Width = 134;
+            // 
+            // upSpeedHeader
+            // 
+            this.upSpeedHeader.Text = "Upload Speed to Peer";
+            this.upSpeedHeader.Width = 117;
             // 
             // tab4
             // 
-            this.tab4.Controls.Add(this.cartesianChart1);
+            this.tab4.Controls.Add(this.trackerListView);
             this.tab4.Location = new System.Drawing.Point(4, 22);
             this.tab4.Name = "tab4";
-            this.tab4.Padding = new System.Windows.Forms.Padding(3);
             this.tab4.Size = new System.Drawing.Size(1896, 474);
-            this.tab4.TabIndex = 1;
-            this.tab4.Text = "Graphs";
+            this.tab4.TabIndex = 3;
+            this.tab4.Text = "Trackers";
             this.tab4.UseVisualStyleBackColor = true;
+            // 
+            // tab5
+            // 
+            this.tab5.Controls.Add(this.cartesianChart1);
+            this.tab5.Location = new System.Drawing.Point(4, 22);
+            this.tab5.Name = "tab5";
+            this.tab5.Padding = new System.Windows.Forms.Padding(3);
+            this.tab5.Size = new System.Drawing.Size(1896, 474);
+            this.tab5.TabIndex = 1;
+            this.tab5.Text = "Graphs";
+            this.tab5.UseVisualStyleBackColor = true;
             // 
             // cartesianChart1
             // 
@@ -380,26 +414,69 @@
             this.mainTimer.Interval = 1000;
             this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
             // 
-            // ipHeader
+            // trackerListView
             // 
-            this.ipHeader.Text = "IP";
-            this.ipHeader.Width = 118;
+            this.trackerListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.nameHeader,
+            this.statusHeader,
+            this.sourcesHeader,
+            this.peerHeader,
+            this.downloadedHeader2});
+            this.trackerListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trackerListView.HideSelection = false;
+            this.trackerListView.Location = new System.Drawing.Point(0, 0);
+            this.trackerListView.Name = "trackerListView";
+            this.trackerListView.Size = new System.Drawing.Size(1896, 474);
+            this.trackerListView.TabIndex = 0;
+            this.trackerListView.UseCompatibleStateImageBehavior = false;
+            this.trackerListView.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader2
+            // nameHeader
             // 
-            this.columnHeader2.Width = 136;
+            this.nameHeader.Text = "Name";
+            this.nameHeader.Width = 108;
             // 
-            // columnHeader3
+            // statusHeader
             // 
-            this.columnHeader3.Width = 115;
+            this.statusHeader.Text = "Status";
+            this.statusHeader.Width = 99;
             // 
-            // columnHeader4
+            // sourcesHeader
             // 
-            this.columnHeader4.Width = 97;
+            this.sourcesHeader.Text = "Sources";
+            this.sourcesHeader.Width = 92;
             // 
-            // columnHeader5
+            // peerHeader
             // 
-            this.columnHeader5.Width = 97;
+            this.peerHeader.Text = "Peers";
+            this.peerHeader.Width = 96;
+            // 
+            // downloadedHeader2
+            // 
+            this.downloadedHeader2.Text = "Downloaded";
+            this.downloadedHeader2.Width = 112;
+            // 
+            // generalInfoTableLayoutPanel
+            // 
+            this.generalInfoTableLayoutPanel.ColumnCount = 2;
+            this.generalInfoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.generalInfoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.generalInfoTableLayoutPanel.Location = new System.Drawing.Point(0, 114);
+            this.generalInfoTableLayoutPanel.Name = "generalInfoTableLayoutPanel";
+            this.generalInfoTableLayoutPanel.RowCount = 2;
+            this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.generalInfoTableLayoutPanel.Size = new System.Drawing.Size(1888, 100);
+            this.generalInfoTableLayoutPanel.TabIndex = 2;
+            // 
+            // tab2
+            // 
+            this.tab2.Location = new System.Drawing.Point(4, 22);
+            this.tab2.Name = "tab2";
+            this.tab2.Size = new System.Drawing.Size(1896, 474);
+            this.tab2.TabIndex = 4;
+            this.tab2.Text = "Files";
+            this.tab2.UseVisualStyleBackColor = true;
             // 
             // cMainForm
             // 
@@ -424,8 +501,9 @@
             this.tab1.ResumeLayout(false);
             this.tableLayoutPanelTop.ResumeLayout(false);
             this.tableLayoutPanelTop.PerformLayout();
-            this.tab2.ResumeLayout(false);
+            this.tab3.ResumeLayout(false);
             this.tab4.ResumeLayout(false);
+            this.tab5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -439,11 +517,11 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TabControl mainToolStripBottom;
         private System.Windows.Forms.TabPage tab1;
-        private System.Windows.Forms.TabPage tab4;
+        private System.Windows.Forms.TabPage tab5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelTop;
         private System.Windows.Forms.Label downloadedLbl;
-        private System.Windows.Forms.TabPage tab2;
         private System.Windows.Forms.TabPage tab3;
+        private System.Windows.Forms.TabPage tab4;
         public System.Windows.Forms.ProgressBar downloadedProgressBar;
         public System.Windows.Forms.Label downloadedPercentLbl;
         private System.Windows.Forms.ListView mainListView;
@@ -464,11 +542,18 @@
         private System.Windows.Forms.ToolStripMenuItem removeDataTorrentFileToolStripMenuItem;
         public System.Windows.Forms.Timer mainTimer;
         private System.Windows.Forms.ColumnHeader ipHeader;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader clientHeader;
+        private System.Windows.Forms.ColumnHeader downloadedHeader;
+        private System.Windows.Forms.ColumnHeader downSpeedHeader;
+        private System.Windows.Forms.ColumnHeader upSpeedHeader;
+        private System.Windows.Forms.ListView trackerListView;
+        private System.Windows.Forms.ColumnHeader nameHeader;
+        private System.Windows.Forms.ColumnHeader statusHeader;
+        private System.Windows.Forms.ColumnHeader sourcesHeader;
+        private System.Windows.Forms.ColumnHeader peerHeader;
+        private System.Windows.Forms.ColumnHeader downloadedHeader2;
+        private System.Windows.Forms.TableLayoutPanel generalInfoTableLayoutPanel;
+        private System.Windows.Forms.TabPage tab2;
     }
 }
 
