@@ -56,30 +56,29 @@ namespace Torrent
         #region Events
         private void pAddTorrent_Load(object sender, EventArgs e)
         {
-            pSettings settings = new pSettings();
-            addFilePathTxt.Text = settings.defaultSettings.defaultTorrentPath;
-            saveFilePathTxt.Text = settings.defaultSettings.defaultSavePath;
-            unlimitedDownloadSpeed = settings.defaultSettings.unlimitedDownloadSpeed;
-            unlimitedUploadSpeed = settings.defaultSettings.unlimitedUploadSpeed;
+            addFilePathTxt.Text = pSettings.defaultSettings.defaultTorrentPath;
+            saveFilePathTxt.Text = pSettings.defaultSettings.defaultSavePath;
+            unlimitedDownloadSpeed = pSettings.defaultSettings.unlimitedDownloadSpeed;
+            unlimitedUploadSpeed = pSettings.defaultSettings.unlimitedUploadSpeed;
 
 
-            if (settings.defaultSettings.unlimitedDownloadSpeed == true)
+            if (pSettings.defaultSettings.unlimitedDownloadSpeed == true)
             {
                 downloadSpeedSelector.Enabled = false;
                 unlimitedDownSpeedBox.Checked = true;
                 unlimitedDownSpeedBox.Visible = true;
             }
             else
-                downloadSpeedSelector.Value = settings.defaultSettings.defaultMaxDownloadSpeed;
+                downloadSpeedSelector.Value = pSettings.defaultSettings.defaultMaxDownloadSpeed;
 
-            if (settings.defaultSettings.unlimitedUploadSpeed == true)
+            if (pSettings.defaultSettings.unlimitedUploadSpeed == true)
             {
                 uploadSpeedSelector.Enabled = false;
                 unlimitedUpSpeedBox.Checked = true;
                 unlimitedUpSpeedBox.Visible = true;
             }
             else
-                uploadSpeedSelector.Value = settings.defaultSettings.defaultMaxUploadSpeed;
+                uploadSpeedSelector.Value = pSettings.defaultSettings.defaultMaxUploadSpeed;
         }
 
         private void addFileBtn_Click(object sender, EventArgs e)

@@ -84,14 +84,22 @@ namespace Torrent
                 torrentIndex++;
             }
         }
-        public void EditMainList(string downloaded, int upSpeed, int downSpeed, int index) //A method that sets all the values that need to be updated
+        public void EditMainList(string downloaded, int upSpeed, int downSpeed, string status, int index) //A method that sets all the values that need to be updated
         {
             if (!IsDisposed)
             {
                 string downloadSpeed = FormatBytes(downSpeed); ;
                 string uploadSpeed = FormatBytes(upSpeed); ;
                 downloadedPercentLbl.Text = downloaded + "%"; //Percent after the progress bar in the lower tab page
-                mainListView.Items[index].SubItems[2].Text = downloaded + "%";
+
+                if(status == "CheckingFiles")//Used to not display percentage when connecting to peers
+                {
+                    downloaded = TrimString(downloaded);
+                    mainListView.Items[index].SubItems[2].Text = "Connecting to peers: " + Environment.NewLine + downloaded + "%";
+                }
+                else
+                    mainListView.Items[index].SubItems[2].Text = downloaded + "%";
+
                 mainListView.Items[index].SubItems[3].Text = downloadSpeed + "/s";
                 mainListView.Items[index].SubItems[4].Text = uploadSpeed + "/s";
             }
@@ -110,6 +118,7 @@ namespace Torrent
                 Directory.Delete(folder + torrentName, true);
         }
 
+        #region LowerTabs
         public void AddToClientList(IEnumerable<PeerInfo> peers, int index)
         {
             string uploadSpeed;
@@ -119,6 +128,7 @@ namespace Torrent
             {
                 downloadSpeed = FormatBytes(peer.DownSpeed);
                 uploadSpeed = FormatBytes(peer.UpSpeed);
+                //Need to check for doubles.
                 item = new ListViewItem(peer.EndPoint.ToString());
                 item.Tag = torrentIndex.ToString();
                 item.SubItems.Add(peer.Client);//Client
@@ -130,7 +140,46 @@ namespace Torrent
 
 
         }
+
+        public void UpdateInfoTabData(string elaspsedTime, string downloaded, int downloadSpeed, string downloadLimit, string status, int torrentIndex)
+        {
+            string down = string.Concat(downloaded, " %");
+            string downSpeed = FormatBytes(downloadSpeed);
+            string limit;
+
+            if (downloadLimit != "∞")
+                limit = string.Concat(downloadLimit, " KB/s");
+            else
+                limit = downloadLimit;
+
+            infoElapsedTimeValueLbl.Text = elaspsedTime;//Elapsed time
+            infoDownloadedValueLbl.Text = down; //Downloaded
+            infoDownloadSpeedValueLbl.Text = downSpeed;//Download Speed
+            infoDownloadLimitValueLbl.Text = limit;//Download Speed Limit
+            infoStatusValueLbl.Text = status;//Current Status
+        }
         #endregion
+        #endregion
+        public string TrimString(string text)
+        {
+            if (string.IsNullOrEmpty(text)) 
+                return text;
+
+            int maxLength = 0;
+            char[] value = text.ToCharArray();
+
+            if (value[1] == ',')// 0-9
+                maxLength = 3;
+            else if (value[2] == ',')//10-99
+                maxLength = 4;
+            else if (value[3] == ',')//100 ->
+                maxLength = 3;
+
+            text = value.ToString();
+
+            return text.Length <= maxLength ? text : text.Substring(0, maxLength);
+        }
+
         private string FormatBytes(long bytes)
         {
             string[] suffix = { "B", "KB", "MB", "GB", "TB" };

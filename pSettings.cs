@@ -14,9 +14,12 @@ namespace Torrent
     public partial class pSettings : Form
     {
         string filePath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
-        public DefaultSettings defaultSettings = new DefaultSettings();
+        public static DefaultSettings defaultSettings { get; private set; }
         public pSettings()
         {
+            if (defaultSettings == null)
+                defaultSettings = new DefaultSettings();
+
             InitializeComponent();
             if (!File.Exists(filePath))//If it's the first time you start the program.
             {

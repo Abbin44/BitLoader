@@ -50,10 +50,21 @@
             this.removeDataTorrentFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainToolStripBottom = new System.Windows.Forms.TabControl();
             this.tab1 = new System.Windows.Forms.TabPage();
+            this.infoDownloadedValueLbl = new System.Windows.Forms.Label();
+            this.infoDownloadSpeedValueLbl = new System.Windows.Forms.Label();
+            this.infoDownloadLimitValueLbl = new System.Windows.Forms.Label();
+            this.infoStatusValueLbl = new System.Windows.Forms.Label();
+            this.infoStatusLbl = new System.Windows.Forms.Label();
+            this.infoDownloadLimitLbl = new System.Windows.Forms.Label();
+            this.infoDownloadSpeedLbl = new System.Windows.Forms.Label();
+            this.infoDownloadedLbl = new System.Windows.Forms.Label();
+            this.infoElapsedTimeLbl = new System.Windows.Forms.Label();
+            this.generalInfoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelTop = new System.Windows.Forms.TableLayoutPanel();
             this.downloadedLbl = new System.Windows.Forms.Label();
             this.downloadedProgressBar = new System.Windows.Forms.ProgressBar();
             this.downloadedPercentLbl = new System.Windows.Forms.Label();
+            this.tab2 = new System.Windows.Forms.TabPage();
             this.tab3 = new System.Windows.Forms.TabPage();
             this.clientListView = new System.Windows.Forms.ListView();
             this.ipHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -62,17 +73,16 @@
             this.downSpeedHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.upSpeedHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tab4 = new System.Windows.Forms.TabPage();
-            this.tab5 = new System.Windows.Forms.TabPage();
-            this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
-            this.mainTimer = new System.Windows.Forms.Timer(this.components);
             this.trackerListView = new System.Windows.Forms.ListView();
             this.nameHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.sourcesHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.peerHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.downloadedHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.generalInfoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.tab2 = new System.Windows.Forms.TabPage();
+            this.tab5 = new System.Windows.Forms.TabPage();
+            this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
+            this.mainTimer = new System.Windows.Forms.Timer(this.components);
+            this.infoElapsedTimeValueLbl = new System.Windows.Forms.Label();
             this.mainToolStripTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -81,6 +91,7 @@
             this.contextMenu.SuspendLayout();
             this.mainToolStripBottom.SuspendLayout();
             this.tab1.SuspendLayout();
+            this.generalInfoTableLayoutPanel.SuspendLayout();
             this.tableLayoutPanelTop.SuspendLayout();
             this.tab3.SuspendLayout();
             this.tab4.SuspendLayout();
@@ -278,6 +289,118 @@
             this.tab1.Text = "Torrent Info";
             this.tab1.UseVisualStyleBackColor = true;
             // 
+            // infoDownloadedValueLbl
+            // 
+            this.infoDownloadedValueLbl.AutoSize = true;
+            this.infoDownloadedValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadedValueLbl.Location = new System.Drawing.Point(120, 25);
+            this.infoDownloadedValueLbl.Name = "infoDownloadedValueLbl";
+            this.infoDownloadedValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoDownloadedValueLbl.TabIndex = 11;
+            // 
+            // infoDownloadSpeedValueLbl
+            // 
+            this.infoDownloadSpeedValueLbl.AutoSize = true;
+            this.infoDownloadSpeedValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadSpeedValueLbl.Location = new System.Drawing.Point(120, 50);
+            this.infoDownloadSpeedValueLbl.Name = "infoDownloadSpeedValueLbl";
+            this.infoDownloadSpeedValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoDownloadSpeedValueLbl.TabIndex = 10;
+            // 
+            // infoDownloadLimitValueLbl
+            // 
+            this.infoDownloadLimitValueLbl.AutoSize = true;
+            this.infoDownloadLimitValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadLimitValueLbl.Location = new System.Drawing.Point(120, 75);
+            this.infoDownloadLimitValueLbl.Name = "infoDownloadLimitValueLbl";
+            this.infoDownloadLimitValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoDownloadLimitValueLbl.TabIndex = 9;
+            // 
+            // infoStatusValueLbl
+            // 
+            this.infoStatusValueLbl.AutoSize = true;
+            this.infoStatusValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoStatusValueLbl.Location = new System.Drawing.Point(120, 100);
+            this.infoStatusValueLbl.Name = "infoStatusValueLbl";
+            this.infoStatusValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoStatusValueLbl.TabIndex = 8;
+            // 
+            // infoStatusLbl
+            // 
+            this.infoStatusLbl.AutoSize = true;
+            this.infoStatusLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoStatusLbl.Location = new System.Drawing.Point(3, 100);
+            this.infoStatusLbl.Name = "infoStatusLbl";
+            this.infoStatusLbl.Size = new System.Drawing.Size(40, 13);
+            this.infoStatusLbl.TabIndex = 7;
+            this.infoStatusLbl.Text = "Status:";
+            // 
+            // infoDownloadLimitLbl
+            // 
+            this.infoDownloadLimitLbl.AutoSize = true;
+            this.infoDownloadLimitLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadLimitLbl.Location = new System.Drawing.Point(3, 75);
+            this.infoDownloadLimitLbl.Name = "infoDownloadLimitLbl";
+            this.infoDownloadLimitLbl.Size = new System.Drawing.Size(82, 13);
+            this.infoDownloadLimitLbl.TabIndex = 6;
+            this.infoDownloadLimitLbl.Text = "Download Limit:";
+            // 
+            // infoDownloadSpeedLbl
+            // 
+            this.infoDownloadSpeedLbl.AutoSize = true;
+            this.infoDownloadSpeedLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadSpeedLbl.Location = new System.Drawing.Point(3, 50);
+            this.infoDownloadSpeedLbl.Name = "infoDownloadSpeedLbl";
+            this.infoDownloadSpeedLbl.Size = new System.Drawing.Size(92, 13);
+            this.infoDownloadSpeedLbl.TabIndex = 5;
+            this.infoDownloadSpeedLbl.Text = "Download Speed:";
+            // 
+            // infoDownloadedLbl
+            // 
+            this.infoDownloadedLbl.AutoSize = true;
+            this.infoDownloadedLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadedLbl.Location = new System.Drawing.Point(3, 25);
+            this.infoDownloadedLbl.Name = "infoDownloadedLbl";
+            this.infoDownloadedLbl.Size = new System.Drawing.Size(70, 13);
+            this.infoDownloadedLbl.TabIndex = 4;
+            this.infoDownloadedLbl.Text = "Downloaded:";
+            // 
+            // infoElapsedTimeLbl
+            // 
+            this.infoElapsedTimeLbl.AutoSize = true;
+            this.infoElapsedTimeLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoElapsedTimeLbl.Location = new System.Drawing.Point(3, 0);
+            this.infoElapsedTimeLbl.Name = "infoElapsedTimeLbl";
+            this.infoElapsedTimeLbl.Size = new System.Drawing.Size(74, 13);
+            this.infoElapsedTimeLbl.TabIndex = 3;
+            this.infoElapsedTimeLbl.Text = "Elapsed Time:";
+            // 
+            // generalInfoTableLayoutPanel
+            // 
+            this.generalInfoTableLayoutPanel.ColumnCount = 2;
+            this.generalInfoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.generalInfoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.generalInfoTableLayoutPanel.Controls.Add(this.infoElapsedTimeValueLbl, 1, 0);
+            this.generalInfoTableLayoutPanel.Controls.Add(this.infoElapsedTimeLbl, 0, 0);
+            this.generalInfoTableLayoutPanel.Controls.Add(this.infoDownloadedValueLbl, 1, 1);
+            this.generalInfoTableLayoutPanel.Controls.Add(this.infoDownloadedLbl, 0, 1);
+            this.generalInfoTableLayoutPanel.Controls.Add(this.infoDownloadSpeedValueLbl, 1, 2);
+            this.generalInfoTableLayoutPanel.Controls.Add(this.infoDownloadSpeedLbl, 0, 2);
+            this.generalInfoTableLayoutPanel.Controls.Add(this.infoDownloadLimitValueLbl, 1, 3);
+            this.generalInfoTableLayoutPanel.Controls.Add(this.infoDownloadLimitLbl, 0, 3);
+            this.generalInfoTableLayoutPanel.Controls.Add(this.infoStatusValueLbl, 1, 4);
+            this.generalInfoTableLayoutPanel.Controls.Add(this.infoStatusLbl, 0, 4);
+            this.generalInfoTableLayoutPanel.Location = new System.Drawing.Point(9, 83);
+            this.generalInfoTableLayoutPanel.Name = "generalInfoTableLayoutPanel";
+            this.generalInfoTableLayoutPanel.RowCount = 5;
+            this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.generalInfoTableLayoutPanel.Size = new System.Drawing.Size(235, 124);
+            this.generalInfoTableLayoutPanel.TabIndex = 2;
+            // 
             // tableLayoutPanelTop
             // 
             this.tableLayoutPanelTop.ColumnCount = 3;
@@ -327,6 +450,15 @@
             this.downloadedPercentLbl.Size = new System.Drawing.Size(0, 34);
             this.downloadedPercentLbl.TabIndex = 2;
             this.downloadedPercentLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tab2
+            // 
+            this.tab2.Location = new System.Drawing.Point(4, 22);
+            this.tab2.Name = "tab2";
+            this.tab2.Size = new System.Drawing.Size(1896, 474);
+            this.tab2.TabIndex = 4;
+            this.tab2.Text = "Files";
+            this.tab2.UseVisualStyleBackColor = true;
             // 
             // tab3
             // 
@@ -390,30 +522,6 @@
             this.tab4.Text = "Trackers";
             this.tab4.UseVisualStyleBackColor = true;
             // 
-            // tab5
-            // 
-            this.tab5.Controls.Add(this.cartesianChart1);
-            this.tab5.Location = new System.Drawing.Point(4, 22);
-            this.tab5.Name = "tab5";
-            this.tab5.Padding = new System.Windows.Forms.Padding(3);
-            this.tab5.Size = new System.Drawing.Size(1896, 474);
-            this.tab5.TabIndex = 1;
-            this.tab5.Text = "Graphs";
-            this.tab5.UseVisualStyleBackColor = true;
-            // 
-            // cartesianChart1
-            // 
-            this.cartesianChart1.Location = new System.Drawing.Point(459, 90);
-            this.cartesianChart1.Name = "cartesianChart1";
-            this.cartesianChart1.Size = new System.Drawing.Size(635, 276);
-            this.cartesianChart1.TabIndex = 0;
-            this.cartesianChart1.Text = "cartesianChart1";
-            // 
-            // mainTimer
-            // 
-            this.mainTimer.Interval = 1000;
-            this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
-            // 
             // trackerListView
             // 
             this.trackerListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -456,27 +564,38 @@
             this.downloadedHeader2.Text = "Downloaded";
             this.downloadedHeader2.Width = 112;
             // 
-            // generalInfoTableLayoutPanel
+            // tab5
             // 
-            this.generalInfoTableLayoutPanel.ColumnCount = 2;
-            this.generalInfoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.generalInfoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.generalInfoTableLayoutPanel.Location = new System.Drawing.Point(0, 114);
-            this.generalInfoTableLayoutPanel.Name = "generalInfoTableLayoutPanel";
-            this.generalInfoTableLayoutPanel.RowCount = 2;
-            this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.generalInfoTableLayoutPanel.Size = new System.Drawing.Size(1888, 100);
-            this.generalInfoTableLayoutPanel.TabIndex = 2;
+            this.tab5.Controls.Add(this.cartesianChart1);
+            this.tab5.Location = new System.Drawing.Point(4, 22);
+            this.tab5.Name = "tab5";
+            this.tab5.Padding = new System.Windows.Forms.Padding(3);
+            this.tab5.Size = new System.Drawing.Size(1896, 474);
+            this.tab5.TabIndex = 1;
+            this.tab5.Text = "Graphs";
+            this.tab5.UseVisualStyleBackColor = true;
             // 
-            // tab2
+            // cartesianChart1
             // 
-            this.tab2.Location = new System.Drawing.Point(4, 22);
-            this.tab2.Name = "tab2";
-            this.tab2.Size = new System.Drawing.Size(1896, 474);
-            this.tab2.TabIndex = 4;
-            this.tab2.Text = "Files";
-            this.tab2.UseVisualStyleBackColor = true;
+            this.cartesianChart1.Location = new System.Drawing.Point(459, 90);
+            this.cartesianChart1.Name = "cartesianChart1";
+            this.cartesianChart1.Size = new System.Drawing.Size(635, 276);
+            this.cartesianChart1.TabIndex = 0;
+            this.cartesianChart1.Text = "cartesianChart1";
+            // 
+            // mainTimer
+            // 
+            this.mainTimer.Interval = 1000;
+            this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
+            // 
+            // infoElapsedTimeValueLbl
+            // 
+            this.infoElapsedTimeValueLbl.AutoSize = true;
+            this.infoElapsedTimeValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoElapsedTimeValueLbl.Location = new System.Drawing.Point(120, 0);
+            this.infoElapsedTimeValueLbl.Name = "infoElapsedTimeValueLbl";
+            this.infoElapsedTimeValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoElapsedTimeValueLbl.TabIndex = 12;
             // 
             // cMainForm
             // 
@@ -499,6 +618,8 @@
             this.contextMenu.ResumeLayout(false);
             this.mainToolStripBottom.ResumeLayout(false);
             this.tab1.ResumeLayout(false);
+            this.generalInfoTableLayoutPanel.ResumeLayout(false);
+            this.generalInfoTableLayoutPanel.PerformLayout();
             this.tableLayoutPanelTop.ResumeLayout(false);
             this.tableLayoutPanelTop.PerformLayout();
             this.tab3.ResumeLayout(false);
@@ -515,7 +636,6 @@
         private System.Windows.Forms.ToolStripButton settingsToolStrip;
         private System.Windows.Forms.ToolStrip mainToolStripTop;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TabControl mainToolStripBottom;
         private System.Windows.Forms.TabPage tab1;
         private System.Windows.Forms.TabPage tab5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelTop;
@@ -554,6 +674,17 @@
         private System.Windows.Forms.ColumnHeader downloadedHeader2;
         private System.Windows.Forms.TableLayoutPanel generalInfoTableLayoutPanel;
         private System.Windows.Forms.TabPage tab2;
+        private System.Windows.Forms.Label infoDownloadedValueLbl;
+        private System.Windows.Forms.Label infoDownloadSpeedValueLbl;
+        private System.Windows.Forms.Label infoDownloadLimitValueLbl;
+        private System.Windows.Forms.Label infoStatusValueLbl;
+        private System.Windows.Forms.Label infoStatusLbl;
+        private System.Windows.Forms.Label infoDownloadLimitLbl;
+        private System.Windows.Forms.Label infoDownloadSpeedLbl;
+        private System.Windows.Forms.Label infoDownloadedLbl;
+        private System.Windows.Forms.Label infoElapsedTimeLbl;
+        private System.Windows.Forms.Label infoElapsedTimeValueLbl;
+        public System.Windows.Forms.TabControl mainToolStripBottom;
     }
 }
 

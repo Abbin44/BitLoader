@@ -29,19 +29,17 @@ namespace Torrent
 
         public void ReadActiveTorrents()
         {
-            DefaultSettings settings = new DefaultSettings();
             string[] torrentsToAdd = File.ReadAllLines(filePath);
-            int uploadSpeed = settings.defaultMaxUploadSpeed;
-            int downloadSpeed = settings.defaultMaxDownloadSpeed;
-            string savePath = settings.defaultSavePath;
+            int uploadSpeed = pSettings.defaultSettings.defaultMaxUploadSpeed;
+            int downloadSpeed = pSettings.defaultSettings.defaultMaxDownloadSpeed;
+            string savePath = pSettings.defaultSettings.defaultSavePath;
             string torrentPath;
-            bool unlimitedDownloadSpeed = settings.unlimitedDownloadSpeed;
-            bool unlimitedUpSpeed = settings.unlimitedUploadSpeed;
+            bool unlimitedDownloadSpeed = pSettings.defaultSettings.unlimitedDownloadSpeed;
+            bool unlimitedUpSpeed = pSettings.defaultSettings.unlimitedUploadSpeed;
 
             for (int i = 0; i < torrentsToAdd.Length; i++)
             {
                 torrentPath = torrentsToAdd[i];
-                //Add to downloaderList as well
                 TorrentDownloader downloader = new TorrentDownloader(uploadSpeed, downloadSpeed, savePath, torrentPath, unlimitedDownloadSpeed, unlimitedUpSpeed);
                 cMainForm.mainForm.downloadList.Add(downloader);  //Add to the main list of downloading objects for indexing
                 cMainForm.mainForm.activeTorrents.Add(downloader.torrentFilePath);

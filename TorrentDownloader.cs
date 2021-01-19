@@ -28,7 +28,9 @@ namespace Torrent
         public bool unlimitedUploadSpeed;
         public int uploadSpeed;
         public int downloadSpeed;
-
+        string currentStatus;
+        string formattedDownLimit;
+        TimeSpan elapsedTime;
         public bool pause { get; set; }
         public float downloaded { get; set; }
         public int torrentIndex { get; set; }
@@ -77,6 +79,11 @@ namespace Torrent
                         if(handle.NeedSaveResumeData() == true)
                            SaveResumeData();
 
+                        if (unlimitedDownloadSpeed == true)
+                            formattedDownLimit = "∞";
+                        else
+                            formattedDownLimit = maxDownloadSpeed.ToString();
+
                         cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToMainList(ti.Name, ti.TotalSize, torrentIndex));
                        
                         while (true)
@@ -88,16 +95,16 @@ namespace Torrent
 
                             // Get a `TorrentStatus` instance from the handle.
                             TorrentStatus status = handle.QueryStatus();
-
                             IEnumerable<PeerInfo> connectedPeers = handle.GetPeerInfo();
 
                             if (status.IsSeeding)
                                 break;
 
+                            elapsedTime = status.ActiveTime;
                             downloaded = status.Progress * 100;
                             uploadSpeed = status.UploadRate;
                             downloadSpeed = status.DownloadRate;
-
+                            currentStatus = status.State.ToString();
                             #region Progress Bar 
                             float progress = 0.0f;
                             if (downloaded > progress + 1 && downloaded < progress + 2)//Fix this garbage
@@ -107,10 +114,13 @@ namespace Torrent
                             }
                             #endregion
 
-                            if(connectedPeers.Count() > 0)
+                            if(connectedPeers.Count() > 0 && cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 2)//2 is client tab
                                 cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToClientList(connectedPeers, torrentIndex));
 
-                            cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditMainList(downloaded.ToString(), uploadSpeed, downloadSpeed, torrentIndex));
+                            if(cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 0)//0 is info tab
+                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.UpdateInfoTabData(elapsedTime.ToString(), downloaded.ToString(), downloadSpeed, formattedDownLimit, currentStatus, torrentIndex));
+
+                            cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditMainList(downloaded.ToString(), uploadSpeed, downloadSpeed, currentStatus, torrentIndex));
                             Thread.Sleep(100);
                         }
                     }
