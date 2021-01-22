@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.addTorrentFileToolStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.addTorrentFromMagnetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStrip = new System.Windows.Forms.ToolStripButton();
             this.mainToolStripTop = new System.Windows.Forms.ToolStrip();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -50,16 +51,17 @@
             this.removeDataTorrentFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainToolStripBottom = new System.Windows.Forms.TabControl();
             this.tab1 = new System.Windows.Forms.TabPage();
+            this.generalInfoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.infoElapsedTimeValueLbl = new System.Windows.Forms.Label();
+            this.infoElapsedTimeLbl = new System.Windows.Forms.Label();
             this.infoDownloadedValueLbl = new System.Windows.Forms.Label();
+            this.infoDownloadedLbl = new System.Windows.Forms.Label();
             this.infoDownloadSpeedValueLbl = new System.Windows.Forms.Label();
+            this.infoDownloadSpeedLbl = new System.Windows.Forms.Label();
             this.infoDownloadLimitValueLbl = new System.Windows.Forms.Label();
+            this.infoDownloadLimitLbl = new System.Windows.Forms.Label();
             this.infoStatusValueLbl = new System.Windows.Forms.Label();
             this.infoStatusLbl = new System.Windows.Forms.Label();
-            this.infoDownloadLimitLbl = new System.Windows.Forms.Label();
-            this.infoDownloadSpeedLbl = new System.Windows.Forms.Label();
-            this.infoDownloadedLbl = new System.Windows.Forms.Label();
-            this.infoElapsedTimeLbl = new System.Windows.Forms.Label();
-            this.generalInfoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelTop = new System.Windows.Forms.TableLayoutPanel();
             this.downloadedLbl = new System.Windows.Forms.Label();
             this.downloadedProgressBar = new System.Windows.Forms.ProgressBar();
@@ -82,7 +84,6 @@
             this.tab5 = new System.Windows.Forms.TabPage();
             this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
             this.mainTimer = new System.Windows.Forms.Timer(this.components);
-            this.infoElapsedTimeValueLbl = new System.Windows.Forms.Label();
             this.mainToolStripTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -102,7 +103,8 @@
             // 
             this.toolStripDropDownButton1.BackColor = System.Drawing.Color.White;
             this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addTorrentFileToolStrip});
+            this.addTorrentFileToolStrip,
+            this.addTorrentFromMagnetToolStripMenuItem});
             this.toolStripDropDownButton1.Image = global::Torrent.Properties.Resources.Add;
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -112,9 +114,16 @@
             // addTorrentFileToolStrip
             // 
             this.addTorrentFileToolStrip.Name = "addTorrentFileToolStrip";
-            this.addTorrentFileToolStrip.Size = new System.Drawing.Size(186, 22);
-            this.addTorrentFileToolStrip.Text = "Add .torrent from file";
+            this.addTorrentFileToolStrip.Size = new System.Drawing.Size(208, 22);
+            this.addTorrentFileToolStrip.Text = "Add torrent from file";
             this.addTorrentFileToolStrip.Click += new System.EventHandler(this.addTorrentFileToolStrip_Click);
+            // 
+            // addTorrentFromMagnetToolStripMenuItem
+            // 
+            this.addTorrentFromMagnetToolStripMenuItem.Name = "addTorrentFromMagnetToolStripMenuItem";
+            this.addTorrentFromMagnetToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.addTorrentFromMagnetToolStripMenuItem.Text = "Add torrent from magnet";
+            this.addTorrentFromMagnetToolStripMenuItem.Click += new System.EventHandler(this.addTorrentFromMagnetToolStripMenuItem_Click);
             // 
             // settingsToolStrip
             // 
@@ -275,7 +284,6 @@
             this.mainToolStripBottom.SelectedIndex = 0;
             this.mainToolStripBottom.Size = new System.Drawing.Size(1904, 500);
             this.mainToolStripBottom.TabIndex = 0;
-            this.mainToolStripBottom.SelectedIndexChanged += new System.EventHandler(this.mainToolStripBottom_SelectedIndexChanged);
             // 
             // tab1
             // 
@@ -288,92 +296,6 @@
             this.tab1.TabIndex = 0;
             this.tab1.Text = "Torrent Info";
             this.tab1.UseVisualStyleBackColor = true;
-            // 
-            // infoDownloadedValueLbl
-            // 
-            this.infoDownloadedValueLbl.AutoSize = true;
-            this.infoDownloadedValueLbl.ForeColor = System.Drawing.Color.Blue;
-            this.infoDownloadedValueLbl.Location = new System.Drawing.Point(120, 25);
-            this.infoDownloadedValueLbl.Name = "infoDownloadedValueLbl";
-            this.infoDownloadedValueLbl.Size = new System.Drawing.Size(0, 13);
-            this.infoDownloadedValueLbl.TabIndex = 11;
-            // 
-            // infoDownloadSpeedValueLbl
-            // 
-            this.infoDownloadSpeedValueLbl.AutoSize = true;
-            this.infoDownloadSpeedValueLbl.ForeColor = System.Drawing.Color.Blue;
-            this.infoDownloadSpeedValueLbl.Location = new System.Drawing.Point(120, 50);
-            this.infoDownloadSpeedValueLbl.Name = "infoDownloadSpeedValueLbl";
-            this.infoDownloadSpeedValueLbl.Size = new System.Drawing.Size(0, 13);
-            this.infoDownloadSpeedValueLbl.TabIndex = 10;
-            // 
-            // infoDownloadLimitValueLbl
-            // 
-            this.infoDownloadLimitValueLbl.AutoSize = true;
-            this.infoDownloadLimitValueLbl.ForeColor = System.Drawing.Color.Blue;
-            this.infoDownloadLimitValueLbl.Location = new System.Drawing.Point(120, 75);
-            this.infoDownloadLimitValueLbl.Name = "infoDownloadLimitValueLbl";
-            this.infoDownloadLimitValueLbl.Size = new System.Drawing.Size(0, 13);
-            this.infoDownloadLimitValueLbl.TabIndex = 9;
-            // 
-            // infoStatusValueLbl
-            // 
-            this.infoStatusValueLbl.AutoSize = true;
-            this.infoStatusValueLbl.ForeColor = System.Drawing.Color.Blue;
-            this.infoStatusValueLbl.Location = new System.Drawing.Point(120, 100);
-            this.infoStatusValueLbl.Name = "infoStatusValueLbl";
-            this.infoStatusValueLbl.Size = new System.Drawing.Size(0, 13);
-            this.infoStatusValueLbl.TabIndex = 8;
-            // 
-            // infoStatusLbl
-            // 
-            this.infoStatusLbl.AutoSize = true;
-            this.infoStatusLbl.ForeColor = System.Drawing.Color.Blue;
-            this.infoStatusLbl.Location = new System.Drawing.Point(3, 100);
-            this.infoStatusLbl.Name = "infoStatusLbl";
-            this.infoStatusLbl.Size = new System.Drawing.Size(40, 13);
-            this.infoStatusLbl.TabIndex = 7;
-            this.infoStatusLbl.Text = "Status:";
-            // 
-            // infoDownloadLimitLbl
-            // 
-            this.infoDownloadLimitLbl.AutoSize = true;
-            this.infoDownloadLimitLbl.ForeColor = System.Drawing.Color.Blue;
-            this.infoDownloadLimitLbl.Location = new System.Drawing.Point(3, 75);
-            this.infoDownloadLimitLbl.Name = "infoDownloadLimitLbl";
-            this.infoDownloadLimitLbl.Size = new System.Drawing.Size(82, 13);
-            this.infoDownloadLimitLbl.TabIndex = 6;
-            this.infoDownloadLimitLbl.Text = "Download Limit:";
-            // 
-            // infoDownloadSpeedLbl
-            // 
-            this.infoDownloadSpeedLbl.AutoSize = true;
-            this.infoDownloadSpeedLbl.ForeColor = System.Drawing.Color.Blue;
-            this.infoDownloadSpeedLbl.Location = new System.Drawing.Point(3, 50);
-            this.infoDownloadSpeedLbl.Name = "infoDownloadSpeedLbl";
-            this.infoDownloadSpeedLbl.Size = new System.Drawing.Size(92, 13);
-            this.infoDownloadSpeedLbl.TabIndex = 5;
-            this.infoDownloadSpeedLbl.Text = "Download Speed:";
-            // 
-            // infoDownloadedLbl
-            // 
-            this.infoDownloadedLbl.AutoSize = true;
-            this.infoDownloadedLbl.ForeColor = System.Drawing.Color.Blue;
-            this.infoDownloadedLbl.Location = new System.Drawing.Point(3, 25);
-            this.infoDownloadedLbl.Name = "infoDownloadedLbl";
-            this.infoDownloadedLbl.Size = new System.Drawing.Size(70, 13);
-            this.infoDownloadedLbl.TabIndex = 4;
-            this.infoDownloadedLbl.Text = "Downloaded:";
-            // 
-            // infoElapsedTimeLbl
-            // 
-            this.infoElapsedTimeLbl.AutoSize = true;
-            this.infoElapsedTimeLbl.ForeColor = System.Drawing.Color.Blue;
-            this.infoElapsedTimeLbl.Location = new System.Drawing.Point(3, 0);
-            this.infoElapsedTimeLbl.Name = "infoElapsedTimeLbl";
-            this.infoElapsedTimeLbl.Size = new System.Drawing.Size(74, 13);
-            this.infoElapsedTimeLbl.TabIndex = 3;
-            this.infoElapsedTimeLbl.Text = "Elapsed Time:";
             // 
             // generalInfoTableLayoutPanel
             // 
@@ -400,6 +322,101 @@
             this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.generalInfoTableLayoutPanel.Size = new System.Drawing.Size(235, 124);
             this.generalInfoTableLayoutPanel.TabIndex = 2;
+            // 
+            // infoElapsedTimeValueLbl
+            // 
+            this.infoElapsedTimeValueLbl.AutoSize = true;
+            this.infoElapsedTimeValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoElapsedTimeValueLbl.Location = new System.Drawing.Point(120, 0);
+            this.infoElapsedTimeValueLbl.Name = "infoElapsedTimeValueLbl";
+            this.infoElapsedTimeValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoElapsedTimeValueLbl.TabIndex = 12;
+            // 
+            // infoElapsedTimeLbl
+            // 
+            this.infoElapsedTimeLbl.AutoSize = true;
+            this.infoElapsedTimeLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoElapsedTimeLbl.Location = new System.Drawing.Point(3, 0);
+            this.infoElapsedTimeLbl.Name = "infoElapsedTimeLbl";
+            this.infoElapsedTimeLbl.Size = new System.Drawing.Size(74, 13);
+            this.infoElapsedTimeLbl.TabIndex = 3;
+            this.infoElapsedTimeLbl.Text = "Elapsed Time:";
+            // 
+            // infoDownloadedValueLbl
+            // 
+            this.infoDownloadedValueLbl.AutoSize = true;
+            this.infoDownloadedValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadedValueLbl.Location = new System.Drawing.Point(120, 25);
+            this.infoDownloadedValueLbl.Name = "infoDownloadedValueLbl";
+            this.infoDownloadedValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoDownloadedValueLbl.TabIndex = 11;
+            // 
+            // infoDownloadedLbl
+            // 
+            this.infoDownloadedLbl.AutoSize = true;
+            this.infoDownloadedLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadedLbl.Location = new System.Drawing.Point(3, 25);
+            this.infoDownloadedLbl.Name = "infoDownloadedLbl";
+            this.infoDownloadedLbl.Size = new System.Drawing.Size(70, 13);
+            this.infoDownloadedLbl.TabIndex = 4;
+            this.infoDownloadedLbl.Text = "Downloaded:";
+            // 
+            // infoDownloadSpeedValueLbl
+            // 
+            this.infoDownloadSpeedValueLbl.AutoSize = true;
+            this.infoDownloadSpeedValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadSpeedValueLbl.Location = new System.Drawing.Point(120, 50);
+            this.infoDownloadSpeedValueLbl.Name = "infoDownloadSpeedValueLbl";
+            this.infoDownloadSpeedValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoDownloadSpeedValueLbl.TabIndex = 10;
+            // 
+            // infoDownloadSpeedLbl
+            // 
+            this.infoDownloadSpeedLbl.AutoSize = true;
+            this.infoDownloadSpeedLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadSpeedLbl.Location = new System.Drawing.Point(3, 50);
+            this.infoDownloadSpeedLbl.Name = "infoDownloadSpeedLbl";
+            this.infoDownloadSpeedLbl.Size = new System.Drawing.Size(92, 13);
+            this.infoDownloadSpeedLbl.TabIndex = 5;
+            this.infoDownloadSpeedLbl.Text = "Download Speed:";
+            // 
+            // infoDownloadLimitValueLbl
+            // 
+            this.infoDownloadLimitValueLbl.AutoSize = true;
+            this.infoDownloadLimitValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadLimitValueLbl.Location = new System.Drawing.Point(120, 75);
+            this.infoDownloadLimitValueLbl.Name = "infoDownloadLimitValueLbl";
+            this.infoDownloadLimitValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoDownloadLimitValueLbl.TabIndex = 9;
+            // 
+            // infoDownloadLimitLbl
+            // 
+            this.infoDownloadLimitLbl.AutoSize = true;
+            this.infoDownloadLimitLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoDownloadLimitLbl.Location = new System.Drawing.Point(3, 75);
+            this.infoDownloadLimitLbl.Name = "infoDownloadLimitLbl";
+            this.infoDownloadLimitLbl.Size = new System.Drawing.Size(82, 13);
+            this.infoDownloadLimitLbl.TabIndex = 6;
+            this.infoDownloadLimitLbl.Text = "Download Limit:";
+            // 
+            // infoStatusValueLbl
+            // 
+            this.infoStatusValueLbl.AutoSize = true;
+            this.infoStatusValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoStatusValueLbl.Location = new System.Drawing.Point(120, 100);
+            this.infoStatusValueLbl.Name = "infoStatusValueLbl";
+            this.infoStatusValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoStatusValueLbl.TabIndex = 8;
+            // 
+            // infoStatusLbl
+            // 
+            this.infoStatusLbl.AutoSize = true;
+            this.infoStatusLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoStatusLbl.Location = new System.Drawing.Point(3, 100);
+            this.infoStatusLbl.Name = "infoStatusLbl";
+            this.infoStatusLbl.Size = new System.Drawing.Size(40, 13);
+            this.infoStatusLbl.TabIndex = 7;
+            this.infoStatusLbl.Text = "Status:";
             // 
             // tableLayoutPanelTop
             // 
@@ -588,15 +605,6 @@
             this.mainTimer.Interval = 1000;
             this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
             // 
-            // infoElapsedTimeValueLbl
-            // 
-            this.infoElapsedTimeValueLbl.AutoSize = true;
-            this.infoElapsedTimeValueLbl.ForeColor = System.Drawing.Color.Blue;
-            this.infoElapsedTimeValueLbl.Location = new System.Drawing.Point(120, 0);
-            this.infoElapsedTimeValueLbl.Name = "infoElapsedTimeValueLbl";
-            this.infoElapsedTimeValueLbl.Size = new System.Drawing.Size(0, 13);
-            this.infoElapsedTimeValueLbl.TabIndex = 12;
-            // 
             // cMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -685,6 +693,7 @@
         private System.Windows.Forms.Label infoElapsedTimeLbl;
         private System.Windows.Forms.Label infoElapsedTimeValueLbl;
         public System.Windows.Forms.TabControl mainToolStripBottom;
+        private System.Windows.Forms.ToolStripMenuItem addTorrentFromMagnetToolStripMenuItem;
     }
 }
 

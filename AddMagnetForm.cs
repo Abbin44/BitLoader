@@ -3,33 +3,25 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Windows.Forms;
-using Ragnar;
 
 namespace Torrent
 {
-    public partial class pAddTorrent : Form
+    public partial class AddMagnetForm : Form
     {
-        public pAddTorrent()
+        public string GetMagnetLink()
         {
-            InitializeComponent();
-        }
-        public string GetAddTorrentFilePath()
-        {
-            return addFilePathTxt.Text;
+            return magnetLinkTxt.Text;
         }
 
         public string GetSaveFilePath()
         {
             return saveFilePathTxt.Text;
-        }        
-        
+        }
+
         public int GetMaxUploadSpeed()
         {
             return maxUploadSpeed;
@@ -53,49 +45,40 @@ namespace Torrent
         bool unlimitedDownloadSpeed;
         bool unlimitedUploadSpeed;
 
-        #region Events
-        private void pAddTorrent_Load(object sender, EventArgs e)
+        public AddMagnetForm()
         {
-            addFilePathTxt.Text = pSettings.defaultSettings.defaultTorrentPath;
-            saveFilePathTxt.Text = pSettings.defaultSettings.defaultSavePath;
-            unlimitedDownloadSpeed = pSettings.defaultSettings.unlimitedDownloadSpeed;
-            unlimitedUploadSpeed = pSettings.defaultSettings.unlimitedUploadSpeed;
+            InitializeComponent();
+
+            saveFilePathTxt.Text = SettingsForm.defaultSettings.defaultSavePath;
+            unlimitedDownloadSpeed = SettingsForm.defaultSettings.unlimitedDownloadSpeed;
+            unlimitedUploadSpeed = SettingsForm.defaultSettings.unlimitedUploadSpeed;
 
 
-            if (pSettings.defaultSettings.unlimitedDownloadSpeed == true)
+            if (SettingsForm.defaultSettings.unlimitedDownloadSpeed == true)
             {
                 downloadSpeedSelector.Enabled = false;
                 unlimitedDownSpeedBox.Checked = true;
                 unlimitedDownSpeedBox.Visible = true;
             }
             else
-                downloadSpeedSelector.Value = pSettings.defaultSettings.defaultMaxDownloadSpeed;
+                downloadSpeedSelector.Value = SettingsForm.defaultSettings.defaultMaxDownloadSpeed;
 
-            if (pSettings.defaultSettings.unlimitedUploadSpeed == true)
+            if (SettingsForm.defaultSettings.unlimitedUploadSpeed == true)
             {
                 uploadSpeedSelector.Enabled = false;
                 unlimitedUpSpeedBox.Checked = true;
                 unlimitedUpSpeedBox.Visible = true;
             }
             else
-                uploadSpeedSelector.Value = pSettings.defaultSettings.defaultMaxUploadSpeed;
+                uploadSpeedSelector.Value = SettingsForm.defaultSettings.defaultMaxUploadSpeed;
         }
 
-        private void addFileBtn_Click(object sender, EventArgs e)
+        #region Events
+        private void pasteClipboardBtn_Click(object sender, EventArgs e)
         {
-            //Opens file browser
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Torrents (*.torrent)|*.torrent|All Files (*.*)|*.*"; //<--- Don't touch this piece of shit filter
-            ofd.RestoreDirectory = true;
-
-            DialogResult dr = ofd.ShowDialog();
-            string torrentFile = string.Empty;
-            if (dr == DialogResult.OK)
-            {
-                torrentFile = ofd.FileName;
-            }
-            addFilePathTxt.Text = torrentFile;
+            magnetLinkTxt.Text = Clipboard.GetText();   
         }
+
         private void saveFolderBtn_Click(object sender, EventArgs e)
         {
             //Opens file browser
@@ -128,13 +111,15 @@ namespace Torrent
 
         private void addTorrentBtn_Click(object sender, EventArgs e)
         {
-            maxUploadSpeed = Convert.ToInt32(uploadSpeedSelector.Value * 1024);
-            maxDownloadSpeed = Convert.ToInt32(downloadSpeedSelector.Value * 1024);
+            maxUploadSpeed = Convert.ToInt32(uploadSpeedSelector.Value);
+            maxDownloadSpeed = Convert.ToInt32(downloadSpeedSelector.Value);
             unlimitedDownloadSpeed = unlimitedDownSpeedBox.Checked;
             unlimitedUploadSpeed = unlimitedUpSpeedBox.Checked;
             this.Close();
         }
+
         #endregion
+
 
     }
 }

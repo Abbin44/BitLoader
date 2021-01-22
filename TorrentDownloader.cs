@@ -24,28 +24,31 @@ namespace Torrent
         public int maxDownloadSpeed;
         public string saveFilePath = "";
         public string torrentFilePath = "";
+        public string magnetLink = "";
         public bool unlimitedDownloadSpeed;
         public bool unlimitedUploadSpeed;
         public int uploadSpeed;
         public int downloadSpeed;
-        string currentStatus;
-        string formattedDownLimit;
-        TimeSpan elapsedTime;
+        public string currentStatus;
+        public string formattedDownLimit;
+        public TimeSpan elapsedTime = TimeSpan.Zero;
+        public IEnumerable<PeerInfo> connectedPeers;
         public bool pause { get; set; }
         public float downloaded { get; set; }
-        public int torrentIndex { get; set; }
-        public TorrentDownloader(int uploadSpeed, int downloadSpeed, string savePath, string torrentPath, bool unlimitedDownSpeed, bool unlimitedUpSpeed)
+        public int torrentIndex;
+        public TorrentDownloader(int uploadSpeed, int downloadSpeed, string savePath, string torrentPath, string magnet, bool unlimitedDownSpeed, bool unlimitedUpSpeed)
         {
             maxUploadSpeed = uploadSpeed;
             maxDownloadSpeed = downloadSpeed;
             saveFilePath = savePath;
             torrentFilePath = torrentPath;
+            magnetLink = magnet;
             unlimitedDownloadSpeed = unlimitedDownSpeed;
             unlimitedUploadSpeed = unlimitedUpSpeed;
             pause = false;
         }
 
-        public void AddTorrent()
+        public void AddTorrentFromFile()
         {
             try
             {
@@ -95,7 +98,7 @@ namespace Torrent
 
                             // Get a `TorrentStatus` instance from the handle.
                             TorrentStatus status = handle.QueryStatus();
-                            IEnumerable<PeerInfo> connectedPeers = handle.GetPeerInfo();
+                            connectedPeers = handle.GetPeerInfo();
 
                             if (status.IsSeeding)
                                 break;
@@ -105,20 +108,12 @@ namespace Torrent
                             uploadSpeed = status.UploadRate;
                             downloadSpeed = status.DownloadRate;
                             currentStatus = status.State.ToString();
-                            #region Progress Bar 
-                            float progress = 0.0f;
-                            if (downloaded > progress + 1 && downloaded < progress + 2)//Fix this garbage
-                            {
-                                progress = downloaded;
-                                cMainForm.mainForm.downloadedProgressBar.Increment(1);
-                            }
-                            #endregion
 
                             if(connectedPeers.Count() > 0 && cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 2)//2 is client tab
-                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToClientList(connectedPeers, torrentIndex));
+                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToClientList(torrentIndex));
 
                             if(cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 0)//0 is info tab
-                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.UpdateInfoTabData(elapsedTime.ToString(), downloaded.ToString(), downloadSpeed, formattedDownLimit, currentStatus, torrentIndex));
+                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.UpdateInfoTabData());
 
                             cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditMainList(downloaded.ToString(), uploadSpeed, downloadSpeed, currentStatus, torrentIndex));
                             Thread.Sleep(100);
@@ -128,7 +123,88 @@ namespace Torrent
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "AddTorrent -- " + ex, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString(), "AddTorrentFromFile -- " + ex, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void AddTorrentFromMagnet()
+        {
+            try
+            {
+                if (!IsDisposed)
+                {
+                    using (cMainForm.session)
+                    {
+                        cMainForm.session.ListenOn(6881, 6889);
+
+                        #region Torrent Parameters
+                        AddTorrentParams addParams = new AddTorrentParams();
+
+                        if (unlimitedDownloadSpeed == false)
+                            addParams.DownloadLimit = maxDownloadSpeed * 1024;//Transform byte to kB
+
+                        if (unlimitedUploadSpeed == false)
+                            addParams.UploadLimit = maxUploadSpeed * 1024;
+
+                        addParams.Url = magnetLink;
+                        addParams.SavePath = saveFilePath; //This is weird, check it out later
+                        #endregion
+
+                        // Add a torrent to the session and get a `TorrentHandle` in return. There is only one session that contains many handles.
+                        handle = cMainForm.session.AddTorrent(addParams);
+
+                        if (unlimitedDownloadSpeed == true)
+                            formattedDownLimit = "∞";
+                        else
+                            formattedDownLimit = maxDownloadSpeed.ToString();
+
+                        cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToMainList(ti.Name, ti.TotalSize, torrentIndex));
+
+                        while (true)
+                        {
+                            if (pause == true)
+                                PauseHandle();
+                            else if (handle.IsPaused == true && pause == false)
+                                ResumeHandle();
+
+                            // Get a `TorrentStatus` instance from the handle.
+                            TorrentStatus status = handle.QueryStatus();
+                            IEnumerable<PeerInfo> connectedPeers = handle.GetPeerInfo();
+
+                            if (status.IsSeeding) //If download is finished
+                                break;
+
+                            elapsedTime = status.ActiveTime;
+                            downloaded = status.Progress * 100;
+                            uploadSpeed = status.UploadRate;
+                            downloadSpeed = status.DownloadRate;
+                            currentStatus = status.State.ToString();                           
+
+                            if (connectedPeers.Count() > 0 && cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 2)//2 is client tab
+                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToClientList(torrentIndex));
+
+                            if (cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 0)//0 is info tab
+                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.UpdateInfoTabData());
+
+                            cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditMainList(downloaded.ToString(), uploadSpeed, downloadSpeed, currentStatus, torrentIndex));
+                            Thread.Sleep(1);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "AddTorrentFromMagnet -- " + ex, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void UpdateProgressBar()
+        {
+            float progress = 0.0f;
+            if (downloaded > progress + 1 && downloaded < progress + 2)//Fix this garbage
+            {
+                progress = downloaded;
+                cMainForm.mainForm.downloadedProgressBar.Increment(1);
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace Torrent
 {
-    partial class pAddTorrent
+    partial class AddTorrentFileForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.addFileBtn = new System.Windows.Forms.Button();
-            this.addFilePathTxt = new System.Windows.Forms.TextBox();
+            this.addTorrentFilePathTxt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFilePathTxt = new System.Windows.Forms.TextBox();
@@ -37,14 +37,14 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.unlimitedUpSpeedBox = new System.Windows.Forms.CheckBox();
             this.uploadSpeedSelector = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.downloadSpeedSelector = new System.Windows.Forms.NumericUpDown();
+            this.unlimitedDownSpeedBox = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.addTorrentBtn = new System.Windows.Forms.Button();
-            this.unlimitedDownSpeedBox = new System.Windows.Forms.CheckBox();
-            this.unlimitedUpSpeedBox = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uploadSpeedSelector)).BeginInit();
@@ -61,13 +61,13 @@
             this.addFileBtn.UseVisualStyleBackColor = true;
             this.addFileBtn.Click += new System.EventHandler(this.addFileBtn_Click);
             // 
-            // addFilePathTxt
+            // addTorrentFilePathTxt
             // 
-            this.addFilePathTxt.Cursor = System.Windows.Forms.Cursors.Default;
-            this.addFilePathTxt.Location = new System.Drawing.Point(4, 18);
-            this.addFilePathTxt.Name = "addFilePathTxt";
-            this.addFilePathTxt.Size = new System.Drawing.Size(188, 20);
-            this.addFilePathTxt.TabIndex = 1;
+            this.addTorrentFilePathTxt.Cursor = System.Windows.Forms.Cursors.Default;
+            this.addTorrentFilePathTxt.Location = new System.Drawing.Point(4, 18);
+            this.addTorrentFilePathTxt.Name = "addTorrentFilePathTxt";
+            this.addTorrentFilePathTxt.Size = new System.Drawing.Size(188, 20);
+            this.addTorrentFilePathTxt.TabIndex = 1;
             // 
             // label1
             // 
@@ -111,7 +111,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.saveFolderBtn, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.addFilePathTxt, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.addTorrentFilePathTxt, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.addFileBtn, 1, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -155,6 +155,19 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 9F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(328, 147);
             this.tableLayoutPanel2.TabIndex = 7;
+            // 
+            // unlimitedUpSpeedBox
+            // 
+            this.unlimitedUpSpeedBox.AutoSize = true;
+            this.unlimitedUpSpeedBox.ForeColor = System.Drawing.Color.Blue;
+            this.unlimitedUpSpeedBox.Location = new System.Drawing.Point(165, 45);
+            this.unlimitedUpSpeedBox.Name = "unlimitedUpSpeedBox";
+            this.unlimitedUpSpeedBox.Size = new System.Drawing.Size(140, 17);
+            this.unlimitedUpSpeedBox.TabIndex = 13;
+            this.unlimitedUpSpeedBox.Text = "Unlimited Upload Speed";
+            this.unlimitedUpSpeedBox.UseVisualStyleBackColor = true;
+            this.unlimitedUpSpeedBox.Visible = false;
+            this.unlimitedUpSpeedBox.CheckedChanged += new System.EventHandler(this.unlimitedUpSpeedBox_CheckedChanged);
             // 
             // uploadSpeedSelector
             // 
@@ -214,6 +227,19 @@
             0,
             0});
             // 
+            // unlimitedDownSpeedBox
+            // 
+            this.unlimitedDownSpeedBox.AutoSize = true;
+            this.unlimitedDownSpeedBox.ForeColor = System.Drawing.Color.Blue;
+            this.unlimitedDownSpeedBox.Location = new System.Drawing.Point(4, 45);
+            this.unlimitedDownSpeedBox.Name = "unlimitedDownSpeedBox";
+            this.unlimitedDownSpeedBox.Size = new System.Drawing.Size(154, 17);
+            this.unlimitedDownSpeedBox.TabIndex = 12;
+            this.unlimitedDownSpeedBox.Text = "Unlimited Download Speed";
+            this.unlimitedDownSpeedBox.UseVisualStyleBackColor = true;
+            this.unlimitedDownSpeedBox.Visible = false;
+            this.unlimitedDownSpeedBox.CheckedChanged += new System.EventHandler(this.unlimitedDownSpeedBox_CheckedChanged);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -235,33 +261,7 @@
             this.addTorrentBtn.UseVisualStyleBackColor = true;
             this.addTorrentBtn.Click += new System.EventHandler(this.addTorrentBtn_Click);
             // 
-            // unlimitedDownSpeedBox
-            // 
-            this.unlimitedDownSpeedBox.AutoSize = true;
-            this.unlimitedDownSpeedBox.ForeColor = System.Drawing.Color.Blue;
-            this.unlimitedDownSpeedBox.Location = new System.Drawing.Point(4, 45);
-            this.unlimitedDownSpeedBox.Name = "unlimitedDownSpeedBox";
-            this.unlimitedDownSpeedBox.Size = new System.Drawing.Size(154, 17);
-            this.unlimitedDownSpeedBox.TabIndex = 12;
-            this.unlimitedDownSpeedBox.Text = "Unlimited Download Speed";
-            this.unlimitedDownSpeedBox.UseVisualStyleBackColor = true;
-            this.unlimitedDownSpeedBox.Visible = false;
-            this.unlimitedDownSpeedBox.CheckedChanged += new System.EventHandler(this.unlimitedDownSpeedBox_CheckedChanged);
-            // 
-            // unlimitedUpSpeedBox
-            // 
-            this.unlimitedUpSpeedBox.AutoSize = true;
-            this.unlimitedUpSpeedBox.ForeColor = System.Drawing.Color.Blue;
-            this.unlimitedUpSpeedBox.Location = new System.Drawing.Point(165, 45);
-            this.unlimitedUpSpeedBox.Name = "unlimitedUpSpeedBox";
-            this.unlimitedUpSpeedBox.Size = new System.Drawing.Size(140, 17);
-            this.unlimitedUpSpeedBox.TabIndex = 13;
-            this.unlimitedUpSpeedBox.Text = "Unlimited Upload Speed";
-            this.unlimitedUpSpeedBox.UseVisualStyleBackColor = true;
-            this.unlimitedUpSpeedBox.Visible = false;
-            this.unlimitedUpSpeedBox.CheckedChanged += new System.EventHandler(this.unlimitedUpSpeedBox_CheckedChanged);
-            // 
-            // pAddTorrent
+            // AddTorrentFileForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -270,7 +270,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "pAddTorrent";
+            this.Name = "AddTorrentFileForm";
             this.Text = "Add a Torrent";
             this.Load += new System.EventHandler(this.pAddTorrent_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -287,7 +287,7 @@
         #endregion
 
         private System.Windows.Forms.Button addFileBtn;
-        private System.Windows.Forms.TextBox addFilePathTxt;
+        private System.Windows.Forms.TextBox addTorrentFilePathTxt;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.TextBox saveFilePathTxt;

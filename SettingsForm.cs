@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace Torrent
 {
-    public partial class pSettings : Form
+    public partial class SettingsForm : Form
     {
         string filePath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
         public static DefaultSettings defaultSettings { get; private set; }
-        public pSettings()
+        public SettingsForm()
         {
             if (defaultSettings == null)
                 defaultSettings = new DefaultSettings();

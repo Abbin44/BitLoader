@@ -1,6 +1,6 @@
 ﻿namespace Torrent
 {
-    partial class pSettings
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.

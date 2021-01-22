@@ -22,14 +22,16 @@ namespace Torrent
         public static Session session { get; private set; }
 
         public List<string> activeTorrents = new List<string>();
+        List<string> connectedPeers = new List<string>();
         public List<TorrentDownloader> downloadList = new List<TorrentDownloader>();
         ConcurrentQueue<Action> toRunOnUI = new ConcurrentQueue<Action>();
         TorrentDownloader downloader;
 
         public int maxUploadSpeed;
         public int maxDownloadSpeed;
-        public string saveFilePath = "";
-        public string torrentFilePath = "";
+        public string saveFilePath = string.Empty;
+        public string torrentFilePath = string.Empty;
+        public string magnetLink = string.Empty;
         bool unlimitedDownloadSpeed;
         bool unlimitedUploadSpeed;
         public int torrentIndex = 0;
@@ -54,7 +56,7 @@ namespace Torrent
                 Directory.CreateDirectory(settingsFolder);
 
             this.Show();
-            pSettings settings = new pSettings();
+            SettingsForm settings = new SettingsForm();
             Thread.Sleep(100);
             settings.Close();
 
@@ -77,13 +79,14 @@ namespace Torrent
                 ListViewItem item = new ListViewItem(name);
                 item.Tag = torrentIndex.ToString();
                 item.SubItems.Add(totalSize);
-                item.SubItems.Add("0%");//Downloaded %
-                item.SubItems.Add("0%");//Download Speed
-                item.SubItems.Add("0%");//Upload Speed
+                item.SubItems.Add("");//Downloaded %
+                item.SubItems.Add("");//Download Speed
+                item.SubItems.Add("");//Upload Speed
                 mainListView.Items.Add(item);
                 torrentIndex++;
             }
         }
+
         public void EditMainList(string downloaded, int upSpeed, int downSpeed, string status, int index) //A method that sets all the values that need to be updated
         {
             if (!IsDisposed)
@@ -95,7 +98,7 @@ namespace Torrent
                 if(status == "CheckingFiles")//Used to not display percentage when connecting to peers
                 {
                     downloaded = TrimString(downloaded);
-                    mainListView.Items[index].SubItems[2].Text = "Connecting to peers: " + Environment.NewLine + downloaded + "%";
+                    mainListView.Items[index].SubItems[2].Text = "Connecting to peers: " + downloaded + "%";
                 }
                 else
                     mainListView.Items[index].SubItems[2].Text = downloaded + "%";
@@ -104,6 +107,7 @@ namespace Torrent
                 mainListView.Items[index].SubItems[4].Text = uploadSpeed + "/s";
             }
         }
+
         public void RemoveFromList(int index)
         {
             if (!IsDisposed)
@@ -119,44 +123,47 @@ namespace Torrent
         }
 
         #region LowerTabs
-        public void AddToClientList(IEnumerable<PeerInfo> peers, int index)
+        public void AddToClientList(int index)
         {
             string uploadSpeed;
             string downloadSpeed;
+
+            IEnumerable<PeerInfo> peers = downloadList[selectedItemIndex].connectedPeers;
             ListViewItem item;
             foreach (PeerInfo peer in peers)
             {
                 downloadSpeed = FormatBytes(peer.DownSpeed);
                 uploadSpeed = FormatBytes(peer.UpSpeed);
-                //Need to check for doubles.
-                item = new ListViewItem(peer.EndPoint.ToString());
-                item.Tag = torrentIndex.ToString();
-                item.SubItems.Add(peer.Client);//Client
-                item.SubItems.Add((peer.TotalDownload * 100).ToString());//Downloaded %
-                item.SubItems.Add(downloadSpeed);//Download speed TO peer
-                item.SubItems.Add(uploadSpeed);//Upload speed TO peer
-                clientListView.Items.Add(item);
+
+                if (!connectedPeers.Contains(peer.EndPoint.ToString()))
+                {
+                    item = new ListViewItem(peer.EndPoint.ToString());
+                    item.Tag = torrentIndex.ToString();
+                    item.SubItems.Add(peer.Client);//Client
+                    item.SubItems.Add(peer.TotalDownload.ToString());//Downloaded %
+                    item.SubItems.Add(downloadSpeed);//Download speed TO peer
+                    item.SubItems.Add(uploadSpeed);//Upload speed TO peer
+                    clientListView.Items.Add(item);
+                    connectedPeers.Add(peer.EndPoint.ToString());
+                }
             }
-
-
         }
 
-        public void UpdateInfoTabData(string elaspsedTime, string downloaded, int downloadSpeed, string downloadLimit, string status, int torrentIndex)
+        public void UpdateInfoTabData()
         {
-            string down = string.Concat(downloaded, " %");
-            string downSpeed = FormatBytes(downloadSpeed);
+            string down = string.Concat(downloadList[selectedItemIndex].downloaded, " %");
+            string downSpeed = FormatBytes(downloadList[selectedItemIndex].downloadSpeed);
             string limit;
-
-            if (downloadLimit != "∞")
-                limit = string.Concat(downloadLimit, " KB/s");
+            if (downloadList[selectedItemIndex].formattedDownLimit != "∞")
+                limit = string.Concat(downloadList[selectedItemIndex].formattedDownLimit, " KB/s");
             else
-                limit = downloadLimit;
+                limit = downloadList[selectedItemIndex].formattedDownLimit;
 
-            infoElapsedTimeValueLbl.Text = elaspsedTime;//Elapsed time
+            infoElapsedTimeValueLbl.Text = downloadList[selectedItemIndex].elapsedTime.ToString();//Elapsed time
             infoDownloadedValueLbl.Text = down; //Downloaded
             infoDownloadSpeedValueLbl.Text = downSpeed;//Download Speed
             infoDownloadLimitValueLbl.Text = limit;//Download Speed Limit
-            infoStatusValueLbl.Text = status;//Current Status
+            infoStatusValueLbl.Text = downloadList[selectedItemIndex].currentStatus;//Current Status
         }
         #endregion
         #endregion
@@ -190,7 +197,7 @@ namespace Torrent
                 dblSByte = bytes / 1024.0;
             }
 
-            return String.Format("{0:0.##} {1}", dblSByte, suffix[i]);
+            return string.Format("{0:0.##} {1}", dblSByte, suffix[i]);
         }
 
         private int GetTorrentIndexByName(string torrentName)
@@ -206,7 +213,6 @@ namespace Torrent
         #region Events
         private void mainTimer_Tick(object sender, EventArgs e)
         {
-            Console.WriteLine("REEE CLOCK IS TICKING");
             Action temp;
             while (toRunOnUI.TryDequeue(out temp))
             {
@@ -224,11 +230,14 @@ namespace Torrent
         private void mainListView_MouseClick(object sender, MouseEventArgs e)
         {
             selectedItemIndex = mainListView.FocusedItem.Index;
+            clientListView.Clear();
+            trackerListView.Clear();
+            connectedPeers.Clear();
         }
 
-        private void addTorrentFileToolStrip_Click(object sender, EventArgs e)
+        private void addTorrentFileToolStrip_Click(object sender, EventArgs e) //Add torrent from file
         {
-            pAddTorrent at = new pAddTorrent();
+            AddTorrentFileForm at = new AddTorrentFileForm();
             at.StartPosition = FormStartPosition.CenterScreen;
             at.ShowDialog();
 
@@ -240,24 +249,49 @@ namespace Torrent
             else
                 return;
 
-            maxUploadSpeed = at.GetMaxUploadSpeed();//Fix bug here where it crashes if you close the addtorrent popup.
+            maxUploadSpeed = at.GetMaxUploadSpeed();
             maxDownloadSpeed = at.GetMaxDownloadSpeed();
             unlimitedDownloadSpeed = at.GetUnlimitedDownloadSpeed();
             unlimitedUploadSpeed = at.GetUnlimitedUploadSpeed();
 
-            if (!string.IsNullOrWhiteSpace(torrentFilePath))
-            {
-                downloader = new TorrentDownloader(maxUploadSpeed, maxDownloadSpeed, saveFilePath, torrentFilePath, unlimitedDownloadSpeed, unlimitedUploadSpeed);
-                downloadList.Add(downloader);
-                downloader.torrentIndex = torrentIndex;
-                activeTorrents.Add(downloader.torrentFilePath);
-                new Thread(downloader.AddTorrent).Start();
-                mainTimer.Start();
-            }
+            downloader = new TorrentDownloader(maxUploadSpeed, maxDownloadSpeed, saveFilePath, torrentFilePath, "", unlimitedDownloadSpeed, unlimitedUploadSpeed);
+            downloadList.Add(downloader);
+            downloader.torrentIndex = torrentIndex;
+            activeTorrents.Add(downloader.torrentFilePath);
+            new Thread(downloader.AddTorrentFromFile).Start();
+            mainTimer.Start();
         }
+
+        private void addTorrentFromMagnetToolStripMenuItem_Click(object sender, EventArgs e) //Add torrent From magnet
+        {
+            AddMagnetForm addMagnet = new AddMagnetForm();
+            addMagnet.StartPosition = FormStartPosition.CenterScreen;
+            addMagnet.ShowDialog();
+
+            if (!string.IsNullOrWhiteSpace(addMagnet.GetSaveFilePath()) && !string.IsNullOrWhiteSpace(addMagnet.GetMagnetLink()))
+            {
+                saveFilePath = addMagnet.GetSaveFilePath();
+                magnetLink = addMagnet.GetMagnetLink();
+            }
+            else
+                return;
+
+            maxUploadSpeed = addMagnet.GetMaxUploadSpeed();
+            maxDownloadSpeed = addMagnet.GetMaxDownloadSpeed();
+            unlimitedDownloadSpeed = addMagnet.GetUnlimitedDownloadSpeed();
+            unlimitedUploadSpeed = addMagnet.GetUnlimitedUploadSpeed();
+
+            downloader = new TorrentDownloader(maxUploadSpeed, maxDownloadSpeed, saveFilePath, "", magnetLink, unlimitedDownloadSpeed, unlimitedUploadSpeed);
+            downloadList.Add(downloader);
+            downloader.torrentIndex = torrentIndex;
+            activeTorrents.Add(downloader.magnetLink); //This needs to be extended to accept magnet links... Currently only supports file paths.
+            new Thread(downloader.AddTorrentFromMagnet).Start();
+            mainTimer.Start();
+        }
+
         private void settingsToolStrip_Click(object sender, EventArgs e)
         {
-            pSettings settings = new pSettings();
+            SettingsForm settings = new SettingsForm();
             settings.StartPosition = FormStartPosition.CenterScreen;
             settings.Show();
         }
@@ -317,14 +351,6 @@ namespace Torrent
         }
         #endregion
 
-        private void mainToolStripBottom_SelectedIndexChanged(object sender, EventArgs e) //Lägg till graf här
-        {
-            if (mainToolStripBottom.SelectedTab.Text == "Graphs")
-            {
-                //Console.WriteLine("EEEEK");
-            }
-        }
-
         private void cMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             TorrentHandler handler = new TorrentHandler();
@@ -339,5 +365,6 @@ namespace Torrent
             Environment.Exit(Environment.ExitCode);
         }
         #endregion
+
     }
 }
