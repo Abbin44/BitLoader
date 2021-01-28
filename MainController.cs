@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Build.Framework.XamlTypes;
 using Ragnar;
 
 namespace Torrent
@@ -94,11 +87,19 @@ namespace Torrent
                 string downloadSpeed = FormatBytes(downSpeed); ;
                 string uploadSpeed = FormatBytes(upSpeed); ;
                 downloadedPercentLbl.Text = downloaded + "%"; //Percent after the progress bar in the lower tab page
+                mainListView.Items[index].UseItemStyleForSubItems = false; //Neccesary to be able to change back color for some reason
+                mainListView.Items[index].SubItems[2].BackColor = Color.Blue;
 
-                if(status == "CheckingFiles")//Used to not display percentage when connecting to peers
+                if (status == "CheckingFiles")//Used to not display percentage when connecting to peers
                 {
                     downloaded = TrimString(downloaded);
+                    mainListView.Items[index].SubItems[2].BackColor = Color.Goldenrod;
                     mainListView.Items[index].SubItems[2].Text = "Connecting to peers: " + downloaded + "%";
+                }
+                else if (status == "IsFinished")
+                {
+                    mainListView.Items[index].SubItems[2].BackColor = Color.Green;
+                    mainListView.Items[index].SubItems[2].Text = "Finished";
                 }
                 else
                     mainListView.Items[index].SubItems[2].Text = downloaded + "%";
@@ -123,19 +124,18 @@ namespace Torrent
         }
 
         #region LowerTabs
-        public void AddToClientList(int index)
+        public void AddToClientList(IEnumerable<PeerInfo> peers, int index)
         {
             string uploadSpeed;
             string downloadSpeed;
 
-            IEnumerable<PeerInfo> peers = downloadList[selectedItemIndex].connectedPeers;
             ListViewItem item;
             foreach (PeerInfo peer in peers)
             {
                 downloadSpeed = FormatBytes(peer.DownSpeed);
                 uploadSpeed = FormatBytes(peer.UpSpeed);
 
-                if (!connectedPeers.Contains(peer.EndPoint.ToString()))
+                if (!connectedPeers.Contains(peer.EndPoint.ToString()) && index == selectedItemIndex)
                 {
                     item = new ListViewItem(peer.EndPoint.ToString());
                     item.Tag = torrentIndex.ToString();
@@ -149,21 +149,25 @@ namespace Torrent
             }
         }
 
-        public void UpdateInfoTabData()
+        public void UpdateInfoTabData(string downloaded, int upSpeed, int downSpeed, string downLimit, string status, string elapsedTime, int index)
         {
-            string down = string.Concat(downloadList[selectedItemIndex].downloaded, " %");
-            string downSpeed = FormatBytes(downloadList[selectedItemIndex].downloadSpeed);
-            string limit;
-            if (downloadList[selectedItemIndex].formattedDownLimit != "∞")
-                limit = string.Concat(downloadList[selectedItemIndex].formattedDownLimit, " KB/s");
-            else
-                limit = downloadList[selectedItemIndex].formattedDownLimit;
+            if(index == selectedItemIndex)
+            {
+                string down = string.Concat(downloaded, " %");
+                string downloadSpeed = FormatBytes(downSpeed);
+                string limit;
 
-            infoElapsedTimeValueLbl.Text = downloadList[selectedItemIndex].elapsedTime.ToString();//Elapsed time
-            infoDownloadedValueLbl.Text = down; //Downloaded
-            infoDownloadSpeedValueLbl.Text = downSpeed;//Download Speed
-            infoDownloadLimitValueLbl.Text = limit;//Download Speed Limit
-            infoStatusValueLbl.Text = downloadList[selectedItemIndex].currentStatus;//Current Status
+                if (downLimit != "∞")
+                    limit = string.Concat(downLimit, " KB/s");
+                else
+                    limit = downLimit;
+
+                infoElapsedTimeValueLbl.Text = elapsedTime;//Elapsed time
+                infoDownloadedValueLbl.Text = down; //Downloaded
+                infoDownloadSpeedValueLbl.Text = downloadSpeed;//Download Speed
+                infoDownloadLimitValueLbl.Text = limit;//Download Speed Limit
+                infoStatusValueLbl.Text = status;//Current Status
+            }
         }
         #endregion
         #endregion
@@ -354,7 +358,7 @@ namespace Torrent
         private void cMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             TorrentHandler handler = new TorrentHandler();
-            handler.WriteActiveTorrents(activeTorrents);
+            //handler.WriteActiveTorrents(activeTorrents);
 
             for (int i = 0; i < downloadList.Count; i++) //Save resume data for all torrents that aren't finished.
             {

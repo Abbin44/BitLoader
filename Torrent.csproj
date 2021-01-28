@@ -91,6 +91,8 @@
       <DependentUpon>AddMagnetForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DefaultSettings.cs" />
+    <Compile Include="InfoHash.cs" />
+    <Compile Include="MagnetLink.cs" />
     <Compile Include="MainController.cs">
       <SubType>Form</SubType>
     </Compile>
