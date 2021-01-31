@@ -31,9 +31,11 @@ namespace Torrent
         public int downloadSpeed;
         public string currentStatus;
         public string formattedDownLimit;
+        public string formattedUpLimit;
         public TimeSpan elapsedTime = TimeSpan.Zero;
         public bool pause { get; set; }
         public float downloaded { get; set; }
+        public float uploaded { get; set; }
         public int torrentIndex;
         public TorrentDownloader(int uploadSpeed, int downloadSpeed, string savePath, string torrentPath, string magnet, bool unlimitedDownSpeed, bool unlimitedUpSpeed)
         {
@@ -78,13 +80,12 @@ namespace Torrent
 
                         // Add a torrent to the session and get a `TorrentHandle` in return. There is only one session that contains many handles.
                         handle = cMainForm.session.AddTorrent(addParams);
-                        if(handle.NeedSaveResumeData() == true)
+                        handle.SetPriority(128);
+
+                        if (handle.NeedSaveResumeData() == true)
                            SaveResumeData();
 
-                        if (unlimitedDownloadSpeed == true)
-                            formattedDownLimit = "∞";
-                        else
-                            formattedDownLimit = maxDownloadSpeed.ToString();
+                        SetLimitString();
 
                         cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToMainList(ti.Name, ti.TotalSize, torrentIndex));
                        
@@ -105,15 +106,17 @@ namespace Torrent
 
                             elapsedTime = status.ActiveTime;
                             downloaded = status.Progress * 100;
+                            uploaded = status.TotalUpload * 100;
                             uploadSpeed = status.UploadRate;
                             downloadSpeed = status.DownloadRate;
                             currentStatus = status.State.ToString();
 
-                            if(connectedPeers.Count() > 0 && cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 2)//2 is client tab
+                            UpdateProgressBar(downloaded);
+                            if (connectedPeers.Count() > 0 && cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 2)//2 is client tab
                                 cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToClientList(connectedPeers, torrentIndex));
 
                             if (cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 0)//0 is info tab
-                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.UpdateInfoTabData(downloaded.ToString(), uploadSpeed, downloadSpeed, formattedDownLimit, currentStatus, elapsedTime.ToString(), torrentIndex)); ;
+                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.UpdateInfoTabData(downloaded.ToString(), uploaded.ToString(), uploadSpeed, downloadSpeed, formattedDownLimit, formattedUpLimit, currentStatus, elapsedTime.ToString(), torrentIndex)); ;
 
                             cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditMainList(downloaded.ToString(), uploadSpeed, downloadSpeed, currentStatus, torrentIndex));
                             Thread.Sleep(100);
@@ -159,13 +162,10 @@ namespace Torrent
                         
                         // Add a torrent to the session and get a `TorrentHandle` in return. There is only one session that contains many handles.
                         handle = cMainForm.session.AddTorrent(addParams);
+                        handle.SetPriority(128);
+                        SetLimitString();
 
-                        if (unlimitedDownloadSpeed == true)
-                            formattedDownLimit = "∞";
-                        else
-                            formattedDownLimit = maxDownloadSpeed.ToString();
-                        
-                        cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToMainList(magnet.Name, 0, torrentIndex)); //ti doesn't exist here, you need to use info hash to get the name and size
+                        cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToMainList(magnet.Name, handle.QueryStatus().TotalPayloadDownload, torrentIndex)); //ti doesn't exist here, you need to use info hash to get the name and size
                         while (true)
                         {
                             if (pause == true)
@@ -185,13 +185,18 @@ namespace Torrent
                             downloaded = status.Progress * 100;
                             uploadSpeed = status.UploadRate;
                             downloadSpeed = status.DownloadRate;
-                            currentStatus = status.State.ToString();                           
+                            currentStatus = status.State.ToString();
+                            
+                            UpdateProgressBar(downloaded);
 
                             if (connectedPeers.Count() > 0 && cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 2)//2 is client tab
                                 cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddToClientList(connectedPeers, torrentIndex));
 
                             if (cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 0)//0 is info tab
-                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.UpdateInfoTabData(downloaded.ToString(), uploadSpeed, downloadSpeed, formattedDownLimit, currentStatus, elapsedTime.ToString(), torrentIndex));
+                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.UpdateInfoTabData(downloaded.ToString(), uploaded.ToString(), uploadSpeed, downloadSpeed, formattedDownLimit, formattedUpLimit, currentStatus, elapsedTime.ToString(), torrentIndex));
+
+                            if(cMainForm.mainForm.mainToolStripBottom.SelectedIndex == 1)//1 is file tab
+                                cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.AddFilesToList(GetFilePriorities(), torrentIndex));//Should send list of files instead of priorities but i don't know how to get the files :(
 
                             cMainForm.mainForm.RunOnUIThread(() => cMainForm.mainForm.EditMainList(downloaded.ToString(), uploadSpeed, downloadSpeed, currentStatus, torrentIndex));
                             Thread.Sleep(1);
@@ -205,13 +210,41 @@ namespace Torrent
             }
         }
 
-        private void UpdateProgressBar()
+        private void SetLimitString()
         {
-            float progress = 0.0f;
+            if (unlimitedDownloadSpeed == true)
+                formattedDownLimit = "∞";
+            else
+                formattedDownLimit = maxDownloadSpeed.ToString();
+
+            if (unlimitedUploadSpeed == true)
+                formattedUpLimit = "∞";
+            else
+                formattedUpLimit = maxUploadSpeed.ToString();
+        }
+
+        public void GetFiles()
+        {
+
+        }
+        public int[] GetFilePriorities()
+        {
+            int[] priorities;
+            priorities = handle.GetFilePriorities();
+            return priorities;
+        } 
+
+        public void SetFilePriority(int index, int priority)
+        {
+            handle.SetFilePriority(index, priority);
+        }
+
+        private void UpdateProgressBar(float progress)
+        {
             if (downloaded > progress + 1 && downloaded < progress + 2)//Fix this garbage
             {
                 progress = downloaded;
-                cMainForm.mainForm.downloadedProgressBar.Increment(1);
+                cMainForm.mainForm.downloadedProgressBar.Value = Convert.ToInt32(progress);
             }
         }
 

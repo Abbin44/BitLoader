@@ -29,6 +29,11 @@ namespace Torrent
         bool unlimitedUploadSpeed;
         public int torrentIndex = 0;
         int selectedItemIndex;
+        int selectedFileIndex;
+
+        const int highPriority = 255;
+        const int normalPriority = 128;
+        const int lowPriority = 1;
 
         readonly string activeTorrentsPath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\active_torrents.tor"; // Environment.UserName
         public cMainForm()
@@ -88,7 +93,7 @@ namespace Torrent
                 string uploadSpeed = FormatBytes(upSpeed); ;
                 downloadedPercentLbl.Text = downloaded + "%"; //Percent after the progress bar in the lower tab page
                 mainListView.Items[index].UseItemStyleForSubItems = false; //Neccesary to be able to change back color for some reason
-                mainListView.Items[index].SubItems[2].BackColor = Color.Blue;
+                mainListView.Items[index].SubItems[2].BackColor = Color.DodgerBlue;
 
                 if (status == "CheckingFiles")//Used to not display percentage when connecting to peers
                 {
@@ -149,24 +154,44 @@ namespace Torrent
             }
         }
 
-        public void UpdateInfoTabData(string downloaded, int upSpeed, int downSpeed, string downLimit, string status, string elapsedTime, int index)
+        public void UpdateInfoTabData(string downloaded, string uploaded, int upSpeed, int downSpeed, string downLimit, string upLimit, string status, string elapsedTime, int index)
         {
             if(index == selectedItemIndex)
             {
                 string down = string.Concat(downloaded, " %");
+                string up = string.Concat(uploaded, " %");
                 string downloadSpeed = FormatBytes(downSpeed);
-                string limit;
+                string uploadSpeed = FormatBytes(upSpeed);
+                string dLimit;
+                string uLimit;
 
                 if (downLimit != "∞")
-                    limit = string.Concat(downLimit, " KB/s");
+                    dLimit = string.Concat(downLimit, " KB/s");
                 else
-                    limit = downLimit;
+                    dLimit = downLimit;
+
+                if (upLimit != "∞")
+                    uLimit = string.Concat(upLimit, " KB/s");
+                else
+                    uLimit = upLimit;
 
                 infoElapsedTimeValueLbl.Text = elapsedTime;//Elapsed time
                 infoDownloadedValueLbl.Text = down; //Downloaded
                 infoDownloadSpeedValueLbl.Text = downloadSpeed;//Download Speed
-                infoDownloadLimitValueLbl.Text = limit;//Download Speed Limit
+                infoDownloadLimitValueLbl.Text = dLimit;//Download Speed Limit
                 infoStatusValueLbl.Text = status;//Current Status
+
+                infoUploadedValueLbl.Text = uploaded;
+                infoUploadSpeedValueLbl.Text = uploadSpeed;
+                infoUploadLimitValueLbl.Text = uLimit;
+            }
+        }
+
+        public void AddFilesToList(int[] files, int index)
+        {
+            if(index == selectedItemIndex)
+            {
+
             }
         }
         #endregion
@@ -239,6 +264,12 @@ namespace Torrent
             connectedPeers.Clear();
         }
 
+        private void filesListView_MouseClick(object sender, MouseEventArgs e)
+        {
+            selectedFileIndex = filesListView.FocusedItem.Index;
+        }
+
+
         private void addTorrentFileToolStrip_Click(object sender, EventArgs e) //Add torrent from file
         {
             AddTorrentFileForm at = new AddTorrentFileForm();
@@ -288,7 +319,7 @@ namespace Torrent
             downloader = new TorrentDownloader(maxUploadSpeed, maxDownloadSpeed, saveFilePath, "", magnetLink, unlimitedDownloadSpeed, unlimitedUploadSpeed);
             downloadList.Add(downloader);
             downloader.torrentIndex = torrentIndex;
-            activeTorrents.Add(downloader.magnetLink); //This needs to be extended to accept magnet links... Currently only supports file paths.
+            activeTorrents.Add(downloader.magnetLink);
             new Thread(downloader.AddTorrentFromMagnet).Start();
             mainTimer.Start();
         }
@@ -299,7 +330,7 @@ namespace Torrent
             settings.StartPosition = FormStartPosition.CenterScreen;
             settings.Show();
         }
-        #region Context menu
+        #region Main Context menu
 
         private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -355,6 +386,34 @@ namespace Torrent
         }
         #endregion
 
+        #region Files Context Menu
+
+        //Priorities range from 1-255. Everything else is unvalid.
+        private void highPriorityMenuItem_Click(object sender, EventArgs e)
+        {
+            int torrentIndex = selectedItemIndex;
+            int fileIndex = selectedFileIndex;
+            downloadList[torrentIndex].SetFilePriority(fileIndex, highPriority);
+            filesListView.Items[fileIndex].SubItems[3].Text = "High";
+        }
+
+        private void normalPriorityMenuItem_Click(object sender, EventArgs e)
+        {
+            int torrentIndex = selectedItemIndex;
+            int fileIndex = selectedFileIndex;
+            downloadList[torrentIndex].SetFilePriority(fileIndex, normalPriority);
+            filesListView.Items[fileIndex].SubItems[3].Text = "Normal";
+        }
+
+        private void lowPriorityMenuItem_Click(object sender, EventArgs e)
+        {
+            int torrentIndex = selectedItemIndex;
+            int fileIndex = selectedFileIndex;
+            downloadList[torrentIndex].SetFilePriority(fileIndex, lowPriority);
+            filesListView.Items[fileIndex].SubItems[3].Text = "Low";
+        }
+        #endregion
+
         private void cMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             TorrentHandler handler = new TorrentHandler();
@@ -369,6 +428,5 @@ namespace Torrent
             Environment.Exit(Environment.ExitCode);
         }
         #endregion
-
     }
 }

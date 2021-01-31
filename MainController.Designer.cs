@@ -41,7 +41,7 @@
             this.column3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.column4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.column5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mainListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,6 +51,13 @@
             this.removeDataTorrentFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainToolStripBottom = new System.Windows.Forms.TabControl();
             this.tab1 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.infoUploadedValueLbl = new System.Windows.Forms.Label();
+            this.infoUploadLimitLbl = new System.Windows.Forms.Label();
+            this.infoUploadSpeedValueLbl = new System.Windows.Forms.Label();
+            this.infoUploadedLbl = new System.Windows.Forms.Label();
+            this.infoUploadSpeedLbl = new System.Windows.Forms.Label();
+            this.infoUploadLimitValueLbl = new System.Windows.Forms.Label();
             this.generalInfoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.infoElapsedTimeValueLbl = new System.Windows.Forms.Label();
             this.infoElapsedTimeLbl = new System.Windows.Forms.Label();
@@ -84,19 +91,32 @@
             this.tab5 = new System.Windows.Forms.TabPage();
             this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
             this.mainTimer = new System.Windows.Forms.Timer(this.components);
+            this.filesListView = new System.Windows.Forms.ListView();
+            this.fileNameHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.fileSizeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.filePercentHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.filePriorityHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.filesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.setPriorityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.highPriorityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.normalPriorityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lowPriorityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainToolStripTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.contextMenu.SuspendLayout();
+            this.mainListContextMenu.SuspendLayout();
             this.mainToolStripBottom.SuspendLayout();
             this.tab1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.generalInfoTableLayoutPanel.SuspendLayout();
             this.tableLayoutPanelTop.SuspendLayout();
+            this.tab2.SuspendLayout();
             this.tab3.SuspendLayout();
             this.tab4.SuspendLayout();
             this.tab5.SuspendLayout();
+            this.filesContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripDropDownButton1
@@ -171,7 +191,7 @@
             this.column3,
             this.column4,
             this.column5});
-            this.mainListView.ContextMenuStrip = this.contextMenu;
+            this.mainListView.ContextMenuStrip = this.mainListContextMenu;
             this.mainListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainListView.FullRowSelect = true;
@@ -187,7 +207,7 @@
             // column1
             // 
             this.column1.Text = "Name";
-            this.column1.Width = 151;
+            this.column1.Width = 182;
             // 
             // column2
             // 
@@ -197,7 +217,7 @@
             // column3
             // 
             this.column3.Text = "Downloaded";
-            this.column3.Width = 122;
+            this.column3.Width = 140;
             // 
             // column4
             // 
@@ -209,15 +229,15 @@
             this.column5.Text = "Upload Speed";
             this.column5.Width = 101;
             // 
-            // contextMenu
+            // mainListContextMenu
             // 
-            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainListContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pauseToolStripMenuItem,
             this.startToolStripMenuItem,
             this.stopToolStripMenuItem,
             this.removeToolStripMenuItem});
-            this.contextMenu.Name = "contextMenuStrip1";
-            this.contextMenu.Size = new System.Drawing.Size(118, 92);
+            this.mainListContextMenu.Name = "contextMenuStrip1";
+            this.mainListContextMenu.Size = new System.Drawing.Size(118, 92);
             // 
             // pauseToolStripMenuItem
             // 
@@ -287,6 +307,7 @@
             // 
             // tab1
             // 
+            this.tab1.Controls.Add(this.tableLayoutPanel1);
             this.tab1.Controls.Add(this.generalInfoTableLayoutPanel);
             this.tab1.Controls.Add(this.tableLayoutPanelTop);
             this.tab1.Location = new System.Drawing.Point(4, 22);
@@ -296,6 +317,83 @@
             this.tab1.TabIndex = 0;
             this.tab1.Text = "Torrent Info";
             this.tab1.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.16418F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 57.83582F));
+            this.tableLayoutPanel1.Controls.Add(this.infoUploadedValueLbl, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.infoUploadLimitLbl, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.infoUploadSpeedValueLbl, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.infoUploadedLbl, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.infoUploadSpeedLbl, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.infoUploadLimitValueLbl, 1, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(250, 108);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(268, 77);
+            this.tableLayoutPanel1.TabIndex = 3;
+            // 
+            // infoUploadedValueLbl
+            // 
+            this.infoUploadedValueLbl.AutoSize = true;
+            this.infoUploadedValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoUploadedValueLbl.Location = new System.Drawing.Point(116, 0);
+            this.infoUploadedValueLbl.Name = "infoUploadedValueLbl";
+            this.infoUploadedValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoUploadedValueLbl.TabIndex = 15;
+            // 
+            // infoUploadLimitLbl
+            // 
+            this.infoUploadLimitLbl.AutoSize = true;
+            this.infoUploadLimitLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoUploadLimitLbl.Location = new System.Drawing.Point(3, 50);
+            this.infoUploadLimitLbl.Name = "infoUploadLimitLbl";
+            this.infoUploadLimitLbl.Size = new System.Drawing.Size(68, 13);
+            this.infoUploadLimitLbl.TabIndex = 13;
+            this.infoUploadLimitLbl.Text = "Upload Limit:";
+            // 
+            // infoUploadSpeedValueLbl
+            // 
+            this.infoUploadSpeedValueLbl.AutoSize = true;
+            this.infoUploadSpeedValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoUploadSpeedValueLbl.Location = new System.Drawing.Point(116, 25);
+            this.infoUploadSpeedValueLbl.Name = "infoUploadSpeedValueLbl";
+            this.infoUploadSpeedValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoUploadSpeedValueLbl.TabIndex = 15;
+            // 
+            // infoUploadedLbl
+            // 
+            this.infoUploadedLbl.AutoSize = true;
+            this.infoUploadedLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoUploadedLbl.Location = new System.Drawing.Point(3, 0);
+            this.infoUploadedLbl.Name = "infoUploadedLbl";
+            this.infoUploadedLbl.Size = new System.Drawing.Size(56, 13);
+            this.infoUploadedLbl.TabIndex = 13;
+            this.infoUploadedLbl.Text = "Uploaded:";
+            // 
+            // infoUploadSpeedLbl
+            // 
+            this.infoUploadSpeedLbl.AutoSize = true;
+            this.infoUploadSpeedLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoUploadSpeedLbl.Location = new System.Drawing.Point(3, 25);
+            this.infoUploadSpeedLbl.Name = "infoUploadSpeedLbl";
+            this.infoUploadSpeedLbl.Size = new System.Drawing.Size(78, 13);
+            this.infoUploadSpeedLbl.TabIndex = 13;
+            this.infoUploadSpeedLbl.Text = "Upload Speed:";
+            // 
+            // infoUploadLimitValueLbl
+            // 
+            this.infoUploadLimitValueLbl.AutoSize = true;
+            this.infoUploadLimitValueLbl.ForeColor = System.Drawing.Color.Blue;
+            this.infoUploadLimitValueLbl.Location = new System.Drawing.Point(116, 50);
+            this.infoUploadLimitValueLbl.Name = "infoUploadLimitValueLbl";
+            this.infoUploadLimitValueLbl.Size = new System.Drawing.Size(0, 13);
+            this.infoUploadLimitValueLbl.TabIndex = 14;
             // 
             // generalInfoTableLayoutPanel
             // 
@@ -314,12 +412,13 @@
             this.generalInfoTableLayoutPanel.Controls.Add(this.infoStatusLbl, 0, 4);
             this.generalInfoTableLayoutPanel.Location = new System.Drawing.Point(9, 83);
             this.generalInfoTableLayoutPanel.Name = "generalInfoTableLayoutPanel";
-            this.generalInfoTableLayoutPanel.RowCount = 5;
+            this.generalInfoTableLayoutPanel.RowCount = 6;
             this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.generalInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.generalInfoTableLayoutPanel.Size = new System.Drawing.Size(235, 124);
             this.generalInfoTableLayoutPanel.TabIndex = 2;
             // 
@@ -470,6 +569,7 @@
             // 
             // tab2
             // 
+            this.tab2.Controls.Add(this.filesListView);
             this.tab2.Location = new System.Drawing.Point(4, 22);
             this.tab2.Name = "tab2";
             this.tab2.Size = new System.Drawing.Size(1896, 474);
@@ -605,6 +705,81 @@
             this.mainTimer.Interval = 1000;
             this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
             // 
+            // filesListView
+            // 
+            this.filesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.fileNameHeader,
+            this.fileSizeHeader,
+            this.filePercentHeader,
+            this.filePriorityHeader});
+            this.filesListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.filesListView.HideSelection = false;
+            this.filesListView.Location = new System.Drawing.Point(0, 0);
+            this.filesListView.Name = "filesListView";
+            this.filesListView.Size = new System.Drawing.Size(1896, 474);
+            this.filesListView.TabIndex = 0;
+            this.filesListView.UseCompatibleStateImageBehavior = false;
+            this.filesListView.View = System.Windows.Forms.View.Details;
+            this.filesListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.filesListView_MouseClick);
+            // 
+            // fileNameHeader
+            // 
+            this.fileNameHeader.Text = "Name";
+            this.fileNameHeader.Width = 205;
+            // 
+            // fileSizeHeader
+            // 
+            this.fileSizeHeader.Text = "Size";
+            this.fileSizeHeader.Width = 98;
+            // 
+            // filePercentHeader
+            // 
+            this.filePercentHeader.Text = "%";
+            this.filePercentHeader.Width = 63;
+            // 
+            // filePriorityHeader
+            // 
+            this.filePriorityHeader.Text = "Priority";
+            this.filePriorityHeader.Width = 110;
+            // 
+            // filesContextMenu
+            // 
+            this.filesContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setPriorityToolStripMenuItem});
+            this.filesContextMenu.Name = "filesContextMenu";
+            this.filesContextMenu.Size = new System.Drawing.Size(132, 26);
+            // 
+            // setPriorityToolStripMenuItem
+            // 
+            this.setPriorityToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.highPriorityMenuItem,
+            this.normalPriorityMenuItem,
+            this.lowPriorityMenuItem});
+            this.setPriorityToolStripMenuItem.Name = "setPriorityToolStripMenuItem";
+            this.setPriorityToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setPriorityToolStripMenuItem.Text = "Set Priority";
+            // 
+            // highPriorityMenuItem
+            // 
+            this.highPriorityMenuItem.Name = "highPriorityMenuItem";
+            this.highPriorityMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.highPriorityMenuItem.Text = "High";
+            this.highPriorityMenuItem.Click += new System.EventHandler(this.highPriorityMenuItem_Click);
+            // 
+            // normalPriorityMenuItem
+            // 
+            this.normalPriorityMenuItem.Name = "normalPriorityMenuItem";
+            this.normalPriorityMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.normalPriorityMenuItem.Text = "Normal";
+            this.normalPriorityMenuItem.Click += new System.EventHandler(this.normalPriorityMenuItem_Click);
+            // 
+            // lowPriorityMenuItem
+            // 
+            this.lowPriorityMenuItem.Name = "lowPriorityMenuItem";
+            this.lowPriorityMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.lowPriorityMenuItem.Text = "Low";
+            this.lowPriorityMenuItem.Click += new System.EventHandler(this.lowPriorityMenuItem_Click);
+            // 
             // cMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -623,16 +798,20 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.contextMenu.ResumeLayout(false);
+            this.mainListContextMenu.ResumeLayout(false);
             this.mainToolStripBottom.ResumeLayout(false);
             this.tab1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.generalInfoTableLayoutPanel.ResumeLayout(false);
             this.generalInfoTableLayoutPanel.PerformLayout();
             this.tableLayoutPanelTop.ResumeLayout(false);
             this.tableLayoutPanelTop.PerformLayout();
+            this.tab2.ResumeLayout(false);
             this.tab3.ResumeLayout(false);
             this.tab4.ResumeLayout(false);
             this.tab5.ResumeLayout(false);
+            this.filesContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -656,7 +835,7 @@
         private System.Windows.Forms.ColumnHeader column1;
         private System.Windows.Forms.ColumnHeader column2;
         private System.Windows.Forms.ColumnHeader column3;
-        private System.Windows.Forms.ContextMenuStrip contextMenu;
+        private System.Windows.Forms.ContextMenuStrip mainListContextMenu;
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private LiveCharts.WinForms.CartesianChart cartesianChart1;
         private System.Windows.Forms.ColumnHeader column4;
@@ -694,6 +873,23 @@
         private System.Windows.Forms.Label infoElapsedTimeValueLbl;
         public System.Windows.Forms.TabControl mainToolStripBottom;
         private System.Windows.Forms.ToolStripMenuItem addTorrentFromMagnetToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label infoUploadLimitLbl;
+        private System.Windows.Forms.Label infoUploadedLbl;
+        private System.Windows.Forms.Label infoUploadSpeedLbl;
+        private System.Windows.Forms.Label infoUploadLimitValueLbl;
+        private System.Windows.Forms.Label infoUploadedValueLbl;
+        private System.Windows.Forms.Label infoUploadSpeedValueLbl;
+        private System.Windows.Forms.ListView filesListView;
+        private System.Windows.Forms.ColumnHeader fileNameHeader;
+        private System.Windows.Forms.ColumnHeader fileSizeHeader;
+        private System.Windows.Forms.ColumnHeader filePercentHeader;
+        private System.Windows.Forms.ColumnHeader filePriorityHeader;
+        private System.Windows.Forms.ContextMenuStrip filesContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem setPriorityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem highPriorityMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem normalPriorityMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lowPriorityMenuItem;
     }
 }
 
