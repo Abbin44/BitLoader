@@ -11,12 +11,12 @@ namespace Torrent
 
         }
 
-        string filePath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\active_torrents.tor"; //USE Environment.UserName for releases
+        string filePath = string.Concat($@"C:\Users\", "abbin", @"\AppData\Local\Bitloader\active_torrents.tor"); //USE Environment.UserName for releases
 
         public void WriteActiveTorrents(List<string> torrents)
         {
             string[] activeTorrents = new string[torrents.Count];
-            for (int i = 0; i < activeTorrents.Length; i++)
+            for (int i = 0; i < activeTorrents.Length; ++i)
             {
                 activeTorrents[i] = torrents[i];
             }
@@ -34,7 +34,7 @@ namespace Torrent
             bool unlimitedDownloadSpeed = SettingsForm.defaultSettings.unlimitedDownloadSpeed;
             bool unlimitedUpSpeed = SettingsForm.defaultSettings.unlimitedUploadSpeed;
 
-            for (int i = 0; i < torrentsToAdd.Length; i++)
+            for (int i = 0; i < torrentsToAdd.Length; ++i)
             {
                 if (torrentsToAdd[i].StartsWith("magnet:"))
                     magnetLink = torrentsToAdd[i];

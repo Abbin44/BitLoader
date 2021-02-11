@@ -33,6 +33,7 @@ namespace Torrent
         {
             get { return hash; }
         }
+
         public static InfoHash FromBase32(string infoHash)
         {
             if (infoHash.Length != 32)
@@ -44,7 +45,7 @@ namespace Torrent
             var temp = new byte[8];
             for (int i = 0; i < hash.Length;)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < 8; ++j)
                 {
                     if (!base32DecodeTable.TryGetValue(infoHash[infohashOffset++], out temp[j]))
                         throw new ArgumentException("infoHash", "Value is not a valid base32 encoded string");
@@ -67,7 +68,7 @@ namespace Torrent
                 throw new ArgumentException("Infohash must be 40 characters long");
 
             byte[] hash = new byte[20];
-            for (int i = 0; i < hash.Length; i++)
+            for (int i = 0; i < hash.Length; ++i)
                 hash[i] = byte.Parse(infoHash.Substring(i * 2, 2), System.Globalization.NumberStyles.HexNumber);
 
             return new InfoHash(hash);

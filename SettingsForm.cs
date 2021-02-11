@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Torrent
@@ -15,6 +10,7 @@ namespace Torrent
     {
         string filePath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
         public static DefaultSettings defaultSettings { get; private set; }
+
         public SettingsForm()
         {
             if (defaultSettings == null)
@@ -29,6 +25,7 @@ namespace Torrent
             else
                 ReadSettingsFile();
         }
+
         public void ReadSettingsFile()
         {
             List<string[]> settings = new List<string[]>();
@@ -72,30 +69,30 @@ namespace Torrent
         {
             //Add new settings here (3 places total)
             // > Is used as a splitter.
-            string settings;
+            string settings = string.Empty;
+            StringBuilder sb = new StringBuilder(settings);
             if (!File.Exists(filePath))
             {
-                //Change this to use string builder.
-                settings =  $@"TorrentPath>" + defaultTorrentPathTxt.Text + Environment.NewLine +
+                sb.Append($@"TorrentPath>" + defaultTorrentPathTxt.Text + Environment.NewLine +
                             $@"SaveFolder>" + defaultSavePathTxt.Text + Environment.NewLine +
                             @"MaxDownSpeed>" + downloadSpeedSelector.Value.ToString() + Environment.NewLine +
                             @"MaxUpSpeed>" + uploadSpeedSelector.Value.ToString() + Environment.NewLine +
                             @"UnlimitedDownSpeed>" + unlimitedDownSpeedChk.Checked.ToString() + Environment.NewLine +
-                            @"UnlimitedUpSpeed>" + unlimitedUpSpeedChk.Checked.ToString() + Environment.NewLine;
-                File.WriteAllText(filePath, settings);
+                            @"UnlimitedUpSpeed>" + unlimitedUpSpeedChk.Checked.ToString() + Environment.NewLine);
+                File.WriteAllText(filePath, sb.ToString());
                 ReadSettingsFile();
             }
             else
             {
                 //Change this to use string builder.
-                settings = $@"TorrentPath>" + defaultSettings.defaultTorrentPath + Environment.NewLine +
+                sb.Append($@"TorrentPath>" + defaultSettings.defaultTorrentPath + Environment.NewLine +
                             @"SaveFolder>" + defaultSettings.defaultSavePath + Environment.NewLine +
                             @"MaxDownSpeed>" + defaultSettings.defaultMaxDownloadSpeed.ToString() + Environment.NewLine +
                             @"MaxUpSpeed>" + defaultSettings.defaultMaxUploadSpeed.ToString() + Environment.NewLine +
                             @"UnlimitedDownSpeed>" + unlimitedDownSpeedChk.Checked.ToString() + Environment.NewLine +
-                            @"UnlimitedUpSpeed>" + unlimitedUpSpeedChk.Checked.ToString() + Environment.NewLine;
+                            @"UnlimitedUpSpeed>" + unlimitedUpSpeedChk.Checked.ToString() + Environment.NewLine);
                 ReadSettingsFile();
-                File.WriteAllText(filePath, settings);
+                File.WriteAllText(filePath, sb.ToString());
             }
         }
 

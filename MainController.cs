@@ -35,7 +35,7 @@ namespace Torrent
         const int normalPriority = 128;
         const int lowPriority = 1;
 
-        readonly string activeTorrentsPath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\active_torrents.tor"; // Environment.UserName
+        readonly string activeTorrentsPath = string.Concat($@"C:\Users\", "abbin", @"\AppData\Local\Bitloader\active_torrents.tor"); // Environment.UserName
         public cMainForm()
         {
             if (mainForm != null) 
@@ -91,7 +91,7 @@ namespace Torrent
             {
                 string downloadSpeed = FormatBytes(downSpeed); ;
                 string uploadSpeed = FormatBytes(upSpeed); ;
-                downloadedPercentLbl.Text = downloaded + "%"; //Percent after the progress bar in the lower tab page
+                downloadedPercentLbl.Text = string.Concat(downloaded, "%"); //Percent after the progress bar in the lower tab page
                 mainListView.Items[index].UseItemStyleForSubItems = false; //Neccesary to be able to change back color for some reason
                 mainListView.Items[index].SubItems[2].BackColor = Color.DodgerBlue;
 
@@ -99,7 +99,7 @@ namespace Torrent
                 {
                     downloaded = TrimString(downloaded);
                     mainListView.Items[index].SubItems[2].BackColor = Color.Goldenrod;
-                    mainListView.Items[index].SubItems[2].Text = "Connecting to peers: " + downloaded + "%";
+                    mainListView.Items[index].SubItems[2].Text = string.Concat("Connecting to peers: ", downloaded, "%");
                 }
                 else if (status == "IsFinished")
                 {
@@ -107,10 +107,10 @@ namespace Torrent
                     mainListView.Items[index].SubItems[2].Text = "Finished";
                 }
                 else
-                    mainListView.Items[index].SubItems[2].Text = downloaded + "%";
+                    mainListView.Items[index].SubItems[2].Text = string.Concat(downloaded, "%");
 
-                mainListView.Items[index].SubItems[3].Text = downloadSpeed + "/s";
-                mainListView.Items[index].SubItems[4].Text = uploadSpeed + "/s";
+                mainListView.Items[index].SubItems[3].Text = string.Concat(downloadSpeed, "/s");
+                mainListView.Items[index].SubItems[4].Text = string.Concat(uploadSpeed, "/s");
             }
         }
 

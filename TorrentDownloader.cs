@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Build.Framework.XamlTypes;
 using Ragnar;
 
 namespace Torrent
@@ -71,7 +64,7 @@ namespace Torrent
                             addParams.UploadLimit = maxUploadSpeed * 1024;
 
                         addParams.TorrentInfo = ti;
-                        addParams.SavePath = saveFilePath + @"\" + ti.Name; //This is weird, check it out later
+                        addParams.SavePath = string.Concat(saveFilePath, @"\", ti.Name); //This is weird, check it out later
 
                         string resumeFile = Path.ChangeExtension(torrentFilePath, "resume");
                         if (File.Exists(resumeFile))
