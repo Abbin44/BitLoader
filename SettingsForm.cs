@@ -8,7 +8,7 @@ namespace Torrent
 {
     public partial class SettingsForm : Form
     {
-        string filePath = $@"C:\Users\" + "abbin" + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
+        string filePath = $@"C:\Users\" + Environment.UserName + @"\AppData\Local\Bitloader\settings.cfg"; //USE Environment.UserName for releases
         public static DefaultSettings defaultSettings { get; private set; }
 
         public SettingsForm()

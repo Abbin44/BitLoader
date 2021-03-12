@@ -35,7 +35,7 @@ namespace Torrent
         const int normalPriority = 128;
         const int lowPriority = 1;
 
-        readonly string activeTorrentsPath = string.Concat($@"C:\Users\", "abbin", @"\AppData\Local\Bitloader\active_torrents.tor"); // Environment.UserName
+        readonly string activeTorrentsPath = string.Concat($@"C:\Users\", Environment.UserName, @"\AppData\Local\Bitloader\active_torrents.tor"); // Environment.UserName
         public cMainForm()
         {
             if (mainForm != null) 
@@ -293,6 +293,7 @@ namespace Torrent
             downloadList.Add(downloader);
             downloader.torrentIndex = torrentIndex;
             activeTorrents.Add(downloader.torrentFilePath);
+            //mainForm.RunOnUIThread(() => downloader.AddTorrentFromFile()); ;
             new Thread(downloader.AddTorrentFromFile).Start();
             mainTimer.Start();
         }

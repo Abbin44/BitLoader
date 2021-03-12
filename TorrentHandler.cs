@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
@@ -11,7 +12,7 @@ namespace Torrent
 
         }
 
-        string filePath = string.Concat($@"C:\Users\", "abbin", @"\AppData\Local\Bitloader\active_torrents.tor"); //USE Environment.UserName for releases
+        string filePath = string.Concat($@"C:\Users\", Environment.UserName, @"\AppData\Local\Bitloader\active_torrents.tor"); //USE Environment.UserName for releases
 
         public void WriteActiveTorrents(List<string> torrents)
         {
